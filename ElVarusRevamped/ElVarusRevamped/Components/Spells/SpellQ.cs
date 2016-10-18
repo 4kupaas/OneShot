@@ -109,7 +109,7 @@
                     {
                         if (MyMenu.RootMenu.Item("comboqalways").IsActive()
                             || Misc.QIsKillable(target, Misc.GetQCollisionsCount(target, this.SpellObject.GetPrediction(target).CastPosition)) 
-                            || (Misc.BlightedQuiver.Level > 0 && Misc.GetWStacks(target) >= MyMenu.RootMenu.Item("combow.count").GetValue<Slider>().Value))
+                            || (Misc.BlightedQuiver.Level > 0 && Misc.GetWStacks(target) >= MyMenu.RootMenu.Item("combow.count").GetValue<Slider>().Value && Misc.LastE + 1000 < Environment.TickCount)))
                         {
                             this.SpellObject.StartCharging();
                         }
