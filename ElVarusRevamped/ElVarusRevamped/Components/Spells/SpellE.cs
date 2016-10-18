@@ -84,7 +84,7 @@
                 {
                     if (MyMenu.RootMenu.Item("comboealways").IsActive() || 
                         this.SpellObject.IsKillable(target) || 
-                        (Misc.BlightedQuiver.Level > 0 && Misc.GetWStacks(target) >= MyMenu.RootMenu.Item("comboew.count").GetValue<Slider>().Value))
+                        (Misc.BlightedQuiver.Level > 0 && Misc.GetWStacks(target) >= MyMenu.RootMenu.Item("comboew.count").GetValue<Slider>().Value && Misc.LastQ + 1000 < Environment.TickCount))
                     {
                         if ((!MyMenu.RootMenu.Item("comboealways").IsActive()
                              && Misc.LastQ + 200 < Environment.TickCount) || this.SpellObject.IsKillable(target))
