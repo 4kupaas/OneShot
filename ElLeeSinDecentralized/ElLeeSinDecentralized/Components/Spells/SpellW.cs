@@ -91,6 +91,24 @@
         /// </summary>
         internal override void OnUpdate()
         {
+            if (MyMenu.RootMenu.Item("wardjump.key").GetValue<KeyBind>().Active)
+            {
+                WardManager.WardjumpHandler(Game.CursorPos);
+            }
+
+            if (WardManager.WardJumping)
+            {
+                if (Utils.TickCount - WardManager.LastWardPlacement < Game.Ping + 100)
+                {
+                    return;
+                }
+
+                if (!this.SpellSlot.IsReady() || !Misc.IsWOne)
+                {
+                    WardManager.WardJumping = false;
+                    return;
+                }
+            }
         }
 
         /// <summary>

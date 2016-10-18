@@ -60,6 +60,11 @@
                 {
                     nodeCombo.AddItem(new MenuItem("combo" + spellSlotNameLower + "use", "Use " + spellSlotName).SetValue(true));
 
+                    if (spellSlotNameLower.Equals("w", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        nodeCombo.AddItem(new MenuItem("wardjump.key", "Wardjump key").SetValue(new KeyBind("Z".ToCharArray()[0], KeyBindType.Press)));
+                    }
+
                     if (spellSlotNameLower.Equals("q", StringComparison.InvariantCultureIgnoreCase))
                     {
                         nodeCombo.AddItem(new MenuItem("combo" + spellSlotNameLower + "2use", "Use " + spellSlotName).SetValue(true));

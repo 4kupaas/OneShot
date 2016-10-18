@@ -83,7 +83,7 @@
                             HeroManager.Enemies.Where(
                                 h =>
                                     h.IsValid && !h.IsDead && h.IsVisible
-                                    && h.Distance(ObjectManager.Player) < this.Range).ToList();
+                                    && h.Distance(ObjectManager.Player) < this.Range -50).ToList();
 
                         if (enemiesCount.Count == 0)
                         {
@@ -94,7 +94,7 @@
                             || enemiesCount.Any(t => t.Distance(ObjectManager.Player) > Orbwalking.GetRealAutoAttackRange(ObjectManager.Player)))
                         {
                             this.SpellObject.Cast();
-                            Logging.AddEntry(LoggingEntryTrype.Debug, "@SpellE.cs: Casted first E");
+                            PassiveManager.lastSpellCastTime = Environment.TickCount;
                         }
                     }
                     else
@@ -105,8 +105,14 @@
                                     h.IsValid && !h.IsDead && h.IsVisible && Misc.HasBlindMonkTempest(h)
                                     && h.Distance(ObjectManager.Player) < 500f).ToList();
 
+                        if (Environment.TickCount - PassiveManager.lastSpellCastTime <= 500)
+                        {
+                            return;
+                        }
+
                         if (enemiesCount.Count == 0)
                         {
+                            Logging.AddEntry(LoggingEntryTrype.Debug, "@SpellE.cs: Returning");
                             return;
                         }
 

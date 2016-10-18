@@ -50,7 +50,7 @@
             Obj_AI_Base.OnProcessSpellCast += this.Obj_AI_Base_OnProcessSpellCast;
             Obj_AI_Base.OnBuffAdd += PassiveManager.Obj_AI_Base_OnBuffAdd;
             Obj_AI_Base.OnBuffRemove += PassiveManager.Obj_AI_Base_OnBuffRemove;
-            Obj_AI_Base.OnBuffUpdateCount += PassiveManager.Obj_AI_Base_OnBuffUpdateCount;
+            //Obj_AI_Base.OnBuffUpdateCount += PassiveManager.Obj_AI_Base_OnBuffUpdateCount;
         }
 
 

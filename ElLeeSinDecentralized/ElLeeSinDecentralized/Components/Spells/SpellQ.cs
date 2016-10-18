@@ -94,7 +94,7 @@
                             this.Delay,
                             this.Width,
                             this.Speed,
-                            new CollisionableObjects[] { CollisionableObjects.YasuoWall, CollisionableObjects.Minions });
+                            new[] { CollisionableObjects.YasuoWall, CollisionableObjects.Minions });
 
                         if (pred.Hitchance >= HitChance.High)
                         {

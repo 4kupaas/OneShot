@@ -14,6 +14,11 @@
         internal static int FlurryStacks;
 
         /// <summary>
+        ///     The last spell casting.
+        /// </summary>
+        internal static int lastSpellCastTime;
+
+        /// <summary>
         ///     Called on buff add.
         /// </summary>
         /// <param name="sender"></param>
@@ -66,7 +71,7 @@
         }
 
         /// <summary>
-        ///     Called on buff update.
+        ///     Called on buff update [ seems broken ]
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
@@ -74,12 +79,6 @@
         {
             try
             {
-                if (!sender.IsMe || !args.Buff.DisplayName.Equals(Misc.BlindMonkFlurry, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return;
-                }
-
-                FlurryStacks = args.Buff.Count;
             }
             catch (Exception e)
             {
