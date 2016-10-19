@@ -37,7 +37,7 @@
         /// <summary>
         ///     Gets the collision.
         /// </summary>
-        internal override bool Collision => true;
+        internal override bool Collision => true; // todo : test without
 
         /// <summary>
         ///     Gets or sets the skillshot type.
@@ -76,13 +76,22 @@
             try
             {
                 var target = Misc.GetTarget(this.Range + this.Width, this.DamageType);
+
+
                 if (target != null)
                 {
                     if (Misc.IsQOne)
                     {
-                        // maybe smth wrong here lul
-                        var prediction = this.SpellObject.GetPrediction(target);
-                        if (prediction.Hitchance >= HitChance.High)
+                        var prediction = Prediction.GetPrediction(
+                            target,
+                            this.Delay,
+                            this.Width,
+                            this.Speed,
+                            new CollisionableObjects[] { CollisionableObjects.YasuoWall, CollisionableObjects.Minions });
+
+                        //var prediction = this.SpellObject.GetPrediction(target);
+                        // todo: test this.
+                        if (prediction.Hitchance >= (target.Distance(ObjectManager.Player) > 300 ? HitChance.High : HitChance.Medium))
                         {
                             this.SpellObject.Cast(target);
                         }

@@ -40,6 +40,8 @@
                         this.Speed,
                         this.Collision,
                         this.SkillshotType);
+
+                    Logging.AddEntry(LoggingEntryTrype.Debug, "Delay: {0} - Width: {1} - Speed: {2} - Collision: {3} - SkillshotType : {4} - Slot: {5}", this.Delay, this.Width, this.Speed, this.Collision, this.SkillshotType, this.SpellSlot);
                 }
             }
             catch (Exception e)

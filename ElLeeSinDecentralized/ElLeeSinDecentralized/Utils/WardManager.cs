@@ -28,11 +28,6 @@
         internal static Vector2 JumpPosition;
 
         /// <summary>
-        ///     The last ward placement.
-        /// </summary>
-        internal static int LastWardPlacement;
-
-        /// <summary>
         ///     Player is wardjumping.
         /// </summary>
         internal static bool WardJumping;
@@ -65,6 +60,53 @@
             if (JumpPosition == new Vector2())
             {
                 JumpPosition = playerPosition + (newPosition.Normalized() * (ObjectManager.Player.Distance(position)));
+            }
+
+            if (JumpPosition != new Vector2())
+            {
+
+            }
+
+            if (jumpToAllies || jumpToMinions)
+            {
+                if (!Misc.IsWOne)
+                {
+                    return;
+                }
+
+                if (jumpToAllies)
+                {
+                    var closestAlly = HeroManager.Allies.Where(x => x.Distance(ObjectManager.Player) < Misc.SpellW.Range && x.Distance(playerPosition) < 200).OrderByDescending(i => i.Distance(ObjectManager.Player))
+                            .ToList()
+                            .FirstOrDefault();
+
+                    if (closestAlly != null)
+                    {
+                        // Cast W on champion.
+                        Misc.SpellW.SpellObject.CastOnUnit(closestAlly);
+                        return;
+                    }
+                }
+
+                if (jumpToMinions)
+                {
+                    var closestMinion =
+                        ObjectManager.Get<Obj_AI_Minion>()
+                            .Where(
+                                m =>
+                                    m.IsAlly && m.Distance(ObjectManager.Player) < Misc.SpellW.Range && m.Distance(playerPosition) < 200
+                                    && !m.Name.ToLower().Contains("ward"))
+                            .OrderByDescending(i => i.Distance(ObjectManager.Player))
+                            .ToList()
+                            .FirstOrDefault();
+
+                    if (closestMinion != null)
+                    {
+                        // Cast W on minion.
+                        Misc.SpellW.SpellObject.CastOnUnit(closestMinion);
+                        return;
+                    }
+                }
             }
         }
     }
