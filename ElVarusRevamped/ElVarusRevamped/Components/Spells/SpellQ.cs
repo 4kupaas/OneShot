@@ -109,7 +109,7 @@
                     {
                         if (MyMenu.RootMenu.Item("comboqalways").IsActive()
                             || Misc.QIsKillable(target, Misc.GetQCollisionsCount(target, this.SpellObject.GetPrediction(target).CastPosition)) 
-                            || (Misc.BlightedQuiver.Level > 0 && Misc.GetWStacks(target) >= MyMenu.RootMenu.Item("combow.count").GetValue<Slider>().Value && Misc.LastE + 1000 < Environment.TickCount)))
+                            || (Misc.BlightedQuiver.Level > 0 && Misc.GetWStacks(target) >= MyMenu.RootMenu.Item("combow.count").GetValue<Slider>().Value && Misc.LastE + 1000 < Environment.TickCount))
                         {
                             this.SpellObject.StartCharging();
                         }
@@ -139,23 +139,6 @@
             {
                 Logging.AddEntry(LoggingEntryTrype.Error, "@SpellQ.cs: Can not run OnCombo - {0}", e);
                 throw;
-            }
-        }
-
-        /// <summary>
-        ///     Cast Q.
-        /// </summary>
-        /// <param name="target"></param>
-        private void CastQ(Obj_AI_Hero target)
-        {
-            if (this.SpellObject.IsCharging)
-            {
-                var prediction = this.SpellObject.GetPrediction(target);
-                if (prediction.Hitchance >= HitChance.VeryHigh)
-                {
-                    this.SpellObject.Cast(prediction.CastPosition);
-                    Misc.LastQ = Environment.TickCount;
-                }
             }
         }
 
