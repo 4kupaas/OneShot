@@ -125,19 +125,19 @@
                                  && Misc.LastE + 200 < Environment.TickCount) || 
                                  Misc.QIsKillable(target, Misc.GetQCollisionsCount(target, this.SpellObject.GetPrediction(target).CastPosition)))
                             {
-                                var prediction = this.SpellObject.GetPrediction(target);
+
+                                this.SpellObject.Cast(target);
+                               /*ar prediction = this.SpellObject.GetPrediction(target);
                                 if (prediction.Hitchance >= HitChance.VeryHigh)
                                 {
-                                    this.SpellObject.Cast(prediction.CastPosition);
-                                }
+                                    this.SpellObject.Cast(target);
+                                }*/
                             }
                             else
                             {
-                                var prediction = this.SpellObject.GetPrediction(target);
-                                if (prediction.Hitchance >= HitChance.VeryHigh)
-                                {
-                                    this.SpellObject.Cast(prediction.CastPosition);
-                                }
+
+                                this.SpellObject.Cast(target);
+
                             }
                         }
                     }
