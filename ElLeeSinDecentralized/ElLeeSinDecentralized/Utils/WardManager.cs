@@ -64,7 +64,7 @@
 
             if (JumpPosition == new Vector2())
             {
-
+                JumpPosition = playerPosition + (newPosition.Normalized() * (ObjectManager.Player.Distance(position)));
             }
         }
     }

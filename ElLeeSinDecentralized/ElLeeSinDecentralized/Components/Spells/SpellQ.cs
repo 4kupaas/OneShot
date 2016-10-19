@@ -9,7 +9,8 @@
     using LeagueSharp;
     using LeagueSharp.Common;
 
-    using SharpDX;
+    using System.Drawing;
+
 
     /// <summary>
     ///     The spell Q.
@@ -74,29 +75,14 @@
         {
             try
             {
-                if (this.SpellObject == null)
-                {
-                    return;
-                }
-
                 var target = Misc.GetTarget(this.Range + this.Width, this.DamageType);
                 if (target != null)
                 {
                     if (Misc.IsQOne)
                     {
-                        if (ObjectManager.Player.Distance(target) > this.Range)
-                        {
-                            return;
-                        }
-
-                        var pred = Prediction.GetPrediction(
-                            target,
-                            this.Delay,
-                            this.Width,
-                            this.Speed,
-                            new[] { CollisionableObjects.YasuoWall, CollisionableObjects.Minions });
-
-                        if (pred.Hitchance >= HitChance.High)
+                        // maybe smth wrong here lul
+                        var prediction = this.SpellObject.GetPrediction(target);
+                        if (prediction.Hitchance >= HitChance.High)
                         {
                             this.SpellObject.Cast(target);
                         }
@@ -134,7 +120,6 @@
             this.OnCombo();
         }
 
-
         /// <summary>
         ///     The on last hit callback.
         /// </summary>
@@ -157,5 +142,6 @@
         }
 
         #endregion
+
     }
 }

@@ -1,10 +1,12 @@
 ﻿namespace ElLeeSinDecentralized.Utils
 {
     using System;
+    using System.Collections.Generic;
 
     using ElLeeSinDecentralized.Enumerations;
 
     using LeagueSharp;
+    using LeagueSharp.Common;
 
     internal class PassiveManager
     {
@@ -17,6 +19,11 @@
         ///     The last spell casting.
         /// </summary>
         internal static int lastSpellCastTime;
+
+        /// <summary>
+        ///     The buffnames.
+        /// </summary>
+        static List<String> buffNames = new List<String>(new String[] { "blindmonkqone", "blindmonkwone", "blindmonkeone", "blindmonkqtwo", "blindmonkwtwo", "blindmonketwo", "blindmonkrkick" });
 
         /// <summary>
         ///     Called on buff add.
@@ -45,6 +52,33 @@
         }
 
         /// <summary>
+        ///     Testing.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        internal static void Obj_AI_Base_OnProcessSpellCast1(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (!sender.IsMe)
+            {
+                return;
+            }
+
+            if (args.SData.Name.Equals(Misc.BlindMonkQOne, StringComparison.InvariantCultureIgnoreCase))
+            {
+                Utility.DelayAction.Add(2900, () => { Misc.CanCastQ2 = true; });
+            }
+
+            foreach (string buff in buffNames)
+            {
+                if (buff.Equals(args.SData.Name.ToLower(), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    FlurryStacks = 2;
+                    lastSpellCastTime = Environment.TickCount;
+                }
+            }
+        }
+
+        /// <summary>
         ///     Called on buff remove.
         /// </summary>
         /// <param name="sender"></param>
@@ -62,23 +96,6 @@
                 {
                     FlurryStacks = 0;
                 }
-            }
-            catch (Exception e)
-            {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@PassiveManager.cs: Can not {0} -", e);
-                throw;
-            }
-        }
-
-        /// <summary>
-        ///     Called on buff update [ seems broken ]
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        internal static void Obj_AI_Base_OnBuffUpdateCount(Obj_AI_Base sender, Obj_AI_BaseBuffUpdateCountEventArgs args)
-        {
-            try
-            {
             }
             catch (Exception e)
             {

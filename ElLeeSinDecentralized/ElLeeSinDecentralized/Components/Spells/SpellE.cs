@@ -117,7 +117,7 @@
                         }
 
                         if ((PassiveManager.FlurryStacks == 0 || enemiesCount.Count >= 2) 
-                            || enemiesCount.Any(t => t.Distance(ObjectManager.Player) > Orbwalking.GetRealAutoAttackRange(ObjectManager.Player)))
+                            || enemiesCount.Any(t => t.Distance(ObjectManager.Player) > Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) + 60))
                         {
                             this.SpellObject.Cast();
                             Logging.AddEntry(LoggingEntryTrype.Debug, "@SpellE.cs: Casted second E");
