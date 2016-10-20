@@ -5,6 +5,7 @@
     using System.Drawing;
     using System.Linq;
 
+    using ElLeeSinDecentralized.Components.SpellManagers;
     using ElLeeSinDecentralized.Components.Spells;
     using ElLeeSinDecentralized.Enumerations;
     using ElLeeSinDecentralized.Utils;
@@ -84,7 +85,7 @@
 
                 if ((orbwalkerModeLower.Equals("lasthit")
                     && (spellSlotNameLower.Equals("e") || spellSlotNameLower.Equals("w")
-                        || spellSlotNameLower.Equals("r"))) || (orbwalkerModeLower.Equals("laneclear") && (spellSlotNameLower.Equals("e"))))
+                        || spellSlotNameLower.Equals("r"))) || (orbwalkerModeLower.Equals("laneclear") && (spellSlotNameLower.Equals("r"))))
                 {
                     return false;
                 }
@@ -108,48 +109,47 @@
         {
             if (ObjectManager.Player.IsDead || MenuGUI.IsChatOpen || MenuGUI.IsShopOpen) return;
 
-            var mode = Program.Orbwalker.ActiveMode;
 
-            foreach (var spell in this.spells.Where(x => IsSpellActive(x.SpellSlot, mode)).ToList())
+            // clean thise soon
+            switch (Program.Orbwalker.ActiveMode)
             {
-                if (!IsSpellActive(spell.SpellSlot, mode))
+                case Orbwalking.OrbwalkingMode.Combo:
                 {
-                    continue;
+                    this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.Combo))
+                        .ToList()
+                        .ForEach(spell => spell.OnCombo());
+                    break;
                 }
 
-                switch (mode)
+                case Orbwalking.OrbwalkingMode.Mixed:
                 {
-                    case Orbwalking.OrbwalkingMode.Combo:
-                    {
-                        Logging.AddEntry(LoggingEntryTrype.Debug, "Called {0}", spell.SpellSlot);
-                        spell.OnCombo();
-                        break;
-                    }
+                    this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.Mixed))
+                        .ToList()
+                        .ForEach(spell => spell.OnMixed());
+                    break;
+                }
 
-                    case Orbwalking.OrbwalkingMode.Mixed:
-                    {
-                        Logging.AddEntry(LoggingEntryTrype.Debug, "Called {0}", spell.SpellSlot);
-                        spell.OnMixed();
-                        break;
-                    }
+                case Orbwalking.OrbwalkingMode.LaneClear:
+                {
+                    this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LaneClear))
+                        .ToList()
+                        .ForEach(spell => spell.OnLaneClear());
 
-                    case Orbwalking.OrbwalkingMode.LaneClear:
-                    {
-                        Logging.AddEntry(LoggingEntryTrype.Debug, "Called {0}", spell.SpellSlot);
-                        spell.OnLaneClear();
-                        spell.OnJungleClear();
-                        break;
-                    }
+                    this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LaneClear))
+                        .ToList()
+                        .ForEach(spell => spell.OnJungleClear());
+                    break;
+                }
 
-                    case Orbwalking.OrbwalkingMode.LastHit:
-                    {
-                        Logging.AddEntry(LoggingEntryTrype.Debug, "Called {0}", spell.SpellSlot);
-                        spell.OnLastHit();
-                        break;
-                    }
+                case Orbwalking.OrbwalkingMode.LastHit:
+                {
+                    this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LastHit))
+                        .ToList()
+                        .ForEach(spell => spell.OnLastHit());
+                    break;
                 }
             }
-
+            
             this.spells.ToList().ForEach(spell => spell.OnUpdate());
         }
 

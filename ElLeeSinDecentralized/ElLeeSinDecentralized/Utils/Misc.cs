@@ -86,14 +86,14 @@
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        internal static bool HasBlindMonkQOne(Obj_AI_Hero target) => target.HasBuff("BlindMonkQOne");
+        internal static bool HasBlindMonkQOne(Obj_AI_Base target) => target.HasBuff("BlindMonkQOne");
 
         /// <summary>
         ///     Checks if a target has the BlindMonkTempest buff.
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        internal static bool HasBlindMonkTempest(Obj_AI_Hero target) => target.HasBuff("BlindMonkTempest");
+        internal static bool HasBlindMonkTempest(Obj_AI_Base target) => target.HasBuff("BlindMonkTempest");
 
         /// <summary>
         ///     Gets a target from the common target selector.

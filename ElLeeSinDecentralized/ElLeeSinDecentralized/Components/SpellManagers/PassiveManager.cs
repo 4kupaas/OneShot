@@ -1,9 +1,10 @@
-﻿namespace ElLeeSinDecentralized.Utils
+﻿namespace ElLeeSinDecentralized.Components.SpellManagers
 {
     using System;
     using System.Collections.Generic;
 
     using ElLeeSinDecentralized.Enumerations;
+    using ElLeeSinDecentralized.Utils;
 
     using LeagueSharp;
     using LeagueSharp.Common;

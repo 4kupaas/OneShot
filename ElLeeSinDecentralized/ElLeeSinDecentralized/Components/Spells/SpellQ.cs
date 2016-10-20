@@ -11,6 +11,7 @@
 
     using System.Drawing;
 
+    using ElLeeSinDecentralized.Components.SpellManagers;
 
     /// <summary>
     ///     The spell Q.
@@ -88,6 +89,8 @@
                             new CollisionableObjects[] { CollisionableObjects.YasuoWall, CollisionableObjects.Minions });*/
 
                         var prediction = this.SpellObject.GetPrediction(target);
+                        // todo: test this.
+                        Logging.AddEntry(LoggingEntryTrype.Debug, "Prediction: {0}", prediction.Hitchance);
                         if (prediction.Hitchance >= HitChance.High)
                         {
                             this.SpellObject.Cast(target);
@@ -131,6 +134,15 @@
         /// </summary>
         internal override void OnLastHit()
         {
+            var minion =
+                MinionManager.GetMinions(this.Range)
+                    .Where(obj => this.SpellObject.IsKillable(obj))
+                    .MinOrDefault(obj => obj.Health);
+
+            if (minion != null)
+            {
+                this.SpellObject.Cast(minion);
+            }
         }
 
         /// <summary>
@@ -138,6 +150,32 @@
         /// </summary>
         internal override void OnLaneClear()
         {
+            var minions =
+                MinionManager.GetMinions(
+                    ObjectManager.Player.ServerPosition,
+                    this.SpellObject.Range + this.SpellObject.Width).OrderBy(x => x.Health).FirstOrDefault();
+
+            if (minions == null)
+            {
+                return;
+            }
+
+            if (Misc.IsQOne)
+            {
+                if (PassiveManager.FlurryStacks == 2)
+                {
+                    return;
+                }
+
+                this.SpellObject.Cast(minions);
+            }
+            else
+            {
+                if (this.SpellObject.GetDamage(minions, 1) > minions.Health && Misc.HasBlindMonkQOne(minions))
+                {
+                    this.SpellObject.Cast();
+                }
+            }
         }
 
         /// <summary>

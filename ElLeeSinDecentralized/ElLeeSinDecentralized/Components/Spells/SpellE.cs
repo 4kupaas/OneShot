@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
 
+    using ElLeeSinDecentralized.Components.SpellManagers;
     using ElLeeSinDecentralized.Enumerations;
     using ElLeeSinDecentralized.Utils;
 
@@ -153,6 +154,41 @@
         /// </summary>
         internal override void OnLaneClear()
         {
+            var minions =
+                MinionManager.GetMinions(
+                    ObjectManager.Player.ServerPosition,
+                    this.SpellObject.Range + this.SpellObject.Width).ToList();
+
+            if (minions.Count == 0)
+            {
+                return;
+            }
+
+            if (Misc.IsEOne)
+            {
+                if (PassiveManager.FlurryStacks > 0)
+                {
+                    return;
+                }
+
+                if (minions.Any(x => x.Distance(ObjectManager.Player) < this.Range + this.Width) && minions.Count > 2)
+                {
+                    this.SpellObject.Cast();
+                    PassiveManager.lastSpellCastTime = Environment.TickCount;
+                }
+            }
+            else
+            {
+                if (minions.Any(x => Misc.HasBlindMonkTempest(x) && x.Distance(ObjectManager.Player) < this.Range))
+                {
+                    if (Environment.TickCount - PassiveManager.lastSpellCastTime <= 500)
+                    {
+                        return;
+                    }
+
+                    this.SpellObject.Cast();
+                }
+            }
         }
 
         /// <summary>
@@ -160,6 +196,38 @@
         /// </summary>
         internal override void OnJungleClear()
         {
+            var minion =
+                MinionManager.GetMinions(ObjectManager.Player.ServerPosition, this.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth)
+                .MinOrDefault(obj => obj.MaxHealth);
+
+            if (minion != null)
+            {
+                if (Misc.IsEOne)
+                {
+                    if (PassiveManager.FlurryStacks > 0)
+                    {
+                        return;
+                    }
+
+                    if (minion.Distance(ObjectManager.Player) < this.Range + this.Width)
+                    {
+                        this.SpellObject.Cast();
+                        PassiveManager.lastSpellCastTime = Environment.TickCount;
+                    }
+                }
+                else
+                {
+                    if ((PassiveManager.FlurryStacks == 0) && minion.Distance(ObjectManager.Player) < this.Range && Misc.HasBlindMonkTempest(minion))
+                    {
+                        if (Environment.TickCount - PassiveManager.lastSpellCastTime <= 500)
+                        {
+                            return;
+                        }
+
+                        this.SpellObject.Cast();
+                    }
+                }
+            }
         }
 
         #endregion

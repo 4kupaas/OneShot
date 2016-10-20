@@ -91,7 +91,7 @@
                 }
 
 
-                if (!spellSlotNameLower.Equals("e", StringComparison.InvariantCultureIgnoreCase))
+                if (!spellSlotNameLower.Equals("r", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var nodeLaneClear = new Menu("Clear", spellSlotNameLower + "laneclearmenu");
                     {
