@@ -76,22 +76,19 @@
             try
             {
                 var target = Misc.GetTarget(this.Range + this.Width, this.DamageType);
-
-
                 if (target != null)
                 {
                     if (Misc.IsQOne)
                     {
-                        var prediction = Prediction.GetPrediction(
+                        /*var prediction = Prediction.GetPrediction(
                             target,
                             this.Delay,
                             this.Width,
                             this.Speed,
-                            new CollisionableObjects[] { CollisionableObjects.YasuoWall, CollisionableObjects.Minions });
+                            new CollisionableObjects[] { CollisionableObjects.YasuoWall, CollisionableObjects.Minions });*/
 
-                        //var prediction = this.SpellObject.GetPrediction(target);
-                        // todo: test this.
-                        if (prediction.Hitchance >= (target.Distance(ObjectManager.Player) > 300 ? HitChance.High : HitChance.Medium))
+                        var prediction = this.SpellObject.GetPrediction(target);
+                        if (prediction.Hitchance >= HitChance.High)
                         {
                             this.SpellObject.Cast(target);
                         }

@@ -33,6 +33,40 @@
         internal static bool WardJumping;
 
         /// <summary>
+        ///     The last ward position.
+        /// </summary>
+        private static Vector3 LastWardPosition;
+
+        /// <summary>
+        ///     The last warding time.
+        /// </summary>
+        public static int LastWardPlacement;
+
+        /// <summary>
+        ///     Recheck the wards.
+        /// </summary>
+        private static bool reCheckWard = true;
+
+        /// <summary>
+        ///     Get the ready ward.
+        /// </summary>
+        /// <returns></returns>
+        public static SpellSlot GetReadyWard()
+        {
+            var ward =
+                ObjectManager.Player.InventoryItems.Where(s => WardIds.Contains(s.Id) && s.SpellSlot.IsReady())
+                    .Select(s => s.SpellSlot)
+                    .ToList();
+
+            if (ward.Count == 0)
+            {
+                return SpellSlot.Unknown;
+            }
+
+            return ward.Contains(SpellSlot.Trinket) ? SpellSlot.Trinket : ward.FirstOrDefault();
+        }
+
+        /// <summary>
         ///     The wardjump handler.
         /// </summary>
         /// <param name="position">
@@ -62,9 +96,25 @@
                 JumpPosition = playerPosition + (newPosition.Normalized() * (ObjectManager.Player.Distance(position)));
             }
 
-            if (JumpPosition != new Vector2())
+            if (JumpPosition != new Vector2() && reCheckWard)
             {
+                // recheck
+                reCheckWard = false;
+                Utility.DelayAction.Add(
+                    20,
+                    () =>
+                        {
+                            if (JumpPosition != new Vector2())
+                            {
+                                JumpPosition = new Vector2();
+                                reCheckWard = true;
+                            }
+                        });
+            }
 
+            if (!Misc.SpellW.SpellSlot.IsReady() || !Misc.IsWOne || ObjectManager.Player.Distance(JumpPosition) > Misc.SpellW.Range) // require in range
+            {
+                return;
             }
 
             if (jumpToAllies || jumpToMinions)
@@ -82,6 +132,11 @@
 
                     if (closestAlly != null)
                     {
+                        if (!Misc.IsWOne)
+                        {
+                            return;
+                        }
+
                         // Cast W on champion.
                         Misc.SpellW.SpellObject.CastOnUnit(closestAlly);
                         return;
@@ -102,10 +157,51 @@
 
                     if (closestMinion != null)
                     {
+                        if (!Misc.IsWOne)
+                        {
+                            return;
+                        }
+
                         // Cast W on minion.
                         Misc.SpellW.SpellObject.CastOnUnit(closestMinion);
                         return;
                     }
+                }
+            }
+
+            var isWard = false;
+
+            var ward =
+               ObjectManager.Get<Obj_AI_Base>()
+                   .Where(o => o.IsAlly && o.Name.ToLower().Contains("ward") && o.Distance(JumpPosition) < 200)
+                   .ToList()
+                   .FirstOrDefault();
+
+            if (ward != null)
+            {
+                isWard = true;
+                if (!Misc.IsWOne)
+                {
+                    return;
+                }
+
+                // Cast W on ward.
+                Misc.SpellW.SpellObject.CastOnUnit(ward);
+            }
+
+            if (!isWard)
+            {
+                var readyWard = GetReadyWard();
+                if (readyWard.Equals(SpellSlot.Unknown))
+                {
+                    return;
+                }
+
+                if (Misc.SpellW.SpellSlot.IsReady() && Misc.IsWOne && LastWardPlacement + 400 < Utils.TickCount)
+                {
+                    ObjectManager.Player.Spellbook.CastSpell(readyWard, JumpPosition.To3D());
+                    LastWardPosition = JumpPosition.To3D();
+                    LastWardPlacement = Utils.TickCount;
                 }
             }
         }

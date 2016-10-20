@@ -35,11 +35,12 @@
         {
             try
             {
-                this.LoadSpells(new List<ISpell>() { new SpellQ(), new SpellW(), new SpellE(), new SpellR() });
                 Misc.SpellQ = new SpellQ();
                 Misc.SpellW = new SpellW();
                 Misc.SpellE = new SpellE();
                 Misc.SpellR = new SpellR();
+
+                this.LoadSpells(new List<ISpell>() { new SpellQ(), new SpellW(), new SpellE(), new SpellR() });
             }
             catch (Exception e)
             {
@@ -107,25 +108,47 @@
         {
             if (ObjectManager.Player.IsDead || MenuGUI.IsChatOpen || MenuGUI.IsShopOpen) return;
 
-            this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.Combo))
-                .ToList()
-                .ForEach(spell => spell.OnCombo());
+            var mode = Program.Orbwalker.ActiveMode;
 
-            this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LaneClear))
-                .ToList()
-                .ForEach(spell => spell.OnLaneClear());
+            foreach (var spell in this.spells.Where(x => IsSpellActive(x.SpellSlot, mode)).ToList())
+            {
+                if (!IsSpellActive(spell.SpellSlot, mode))
+                {
+                    continue;
+                }
 
-            this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LaneClear))
-               .ToList()
-               .ForEach(spell => spell.OnJungleClear());
+                switch (mode)
+                {
+                    case Orbwalking.OrbwalkingMode.Combo:
+                    {
+                        Logging.AddEntry(LoggingEntryTrype.Debug, "Called {0}", spell.SpellSlot);
+                        spell.OnCombo();
+                        break;
+                    }
 
-            this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LastHit))
-                .ToList()
-                .ForEach(spell => spell.OnLastHit());
+                    case Orbwalking.OrbwalkingMode.Mixed:
+                    {
+                        Logging.AddEntry(LoggingEntryTrype.Debug, "Called {0}", spell.SpellSlot);
+                        spell.OnMixed();
+                        break;
+                    }
 
-            this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.Mixed))
-                .ToList()
-                .ForEach(spell => spell.OnMixed());
+                    case Orbwalking.OrbwalkingMode.LaneClear:
+                    {
+                        Logging.AddEntry(LoggingEntryTrype.Debug, "Called {0}", spell.SpellSlot);
+                        spell.OnLaneClear();
+                        spell.OnJungleClear();
+                        break;
+                    }
+
+                    case Orbwalking.OrbwalkingMode.LastHit:
+                    {
+                        Logging.AddEntry(LoggingEntryTrype.Debug, "Called {0}", spell.SpellSlot);
+                        spell.OnLastHit();
+                        break;
+                    }
+                }
+            }
 
             this.spells.ToList().ForEach(spell => spell.OnUpdate());
         }

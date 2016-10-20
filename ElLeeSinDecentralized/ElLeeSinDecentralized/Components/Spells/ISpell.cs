@@ -109,12 +109,6 @@
         internal virtual bool Targeted { get; set; }
 
         /// <summary>
-        ///     Gets or sets a value indicating whether the spell is charged.
-        /// </summary>
-        [DefaultValue(false)]
-        internal virtual bool Charged { get; set; }
-
-        /// <summary>
         ///     Gets or sets the width.
         /// </summary>
         internal virtual float Width { get; set; }
