@@ -109,36 +109,47 @@
         {
             if (ObjectManager.Player.IsDead || MenuGUI.IsChatOpen || MenuGUI.IsShopOpen) return;
 
-            var mode = Program.Orbwalker.ActiveMode;
 
-            foreach (var spell in this.spells)
+            // clean this soon
+            switch (Program.Orbwalker.ActiveMode)
             {
-                if (!IsSpellActive(spell.SpellSlot, mode))
+                case Orbwalking.OrbwalkingMode.Combo:
                 {
-                    continue;
+                    this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.Combo))
+                        .ToList()
+                        .ForEach(spell => spell.OnCombo());
+                    break;
                 }
 
-                switch (mode)
+                case Orbwalking.OrbwalkingMode.Mixed:
                 {
-                    case Orbwalking.OrbwalkingMode.Combo:
-                        spell.OnCombo();
-                        break;
-
-                    case Orbwalking.OrbwalkingMode.Mixed:
-                        spell.OnMixed();
-                        break;
-
-                    case Orbwalking.OrbwalkingMode.LaneClear:
-                        spell.OnLaneClear();
-                        break;
-
-                    case Orbwalking.OrbwalkingMode.LastHit:
-                        spell.OnLastHit();
-                        break;
+                    this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.Mixed))
+                        .ToList()
+                        .ForEach(spell => spell.OnMixed());
+                    break;
                 }
 
-                spell.OnUpdate();
+                case Orbwalking.OrbwalkingMode.LaneClear:
+                {
+                    this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LaneClear))
+                        .ToList()
+                        .ForEach(spell => spell.OnLaneClear());
+
+                    this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LaneClear))
+                        .ToList()
+                        .ForEach(spell => spell.OnJungleClear());
+                    break;
+                }
+
+                case Orbwalking.OrbwalkingMode.LastHit:
+                {
+                    this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LastHit))
+                        .ToList()
+                        .ForEach(spell => spell.OnLastHit());
+                    break;
+                }
             }
+            this.spells.ToList().ForEach(spell => spell.OnUpdate());
         }
 
         /// <summary>

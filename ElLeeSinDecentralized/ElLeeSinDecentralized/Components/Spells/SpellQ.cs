@@ -76,43 +76,38 @@
         {
             try
             {
-                var target = Misc.GetTarget(this.Range + this.Width, this.DamageType);
-                if (target != null)
+                var target = Misc.GetTarget(this.SpellObject.Range, this.DamageType);
+                if (target == null)
                 {
-                    if (Misc.IsQOne)
-                    {
-                        /*var prediction = Prediction.GetPrediction(
-                            target,
-                            this.Delay,
-                            this.Width,
-                            this.Speed,
-                            new CollisionableObjects[] { CollisionableObjects.YasuoWall, CollisionableObjects.Minions });*/
+                    return;
+                }
 
-                        var prediction = this.SpellObject.GetPrediction(target);
-                        // todo: test this.
-                        Logging.AddEntry(LoggingEntryTrype.Debug, "Prediction: {0}", prediction.Hitchance);
-                        if (prediction.Hitchance >= HitChance.High)
-                        {
-                            this.SpellObject.Cast(target);
-                        }
+                if (Misc.IsQOne)
+                {
+                    var prediction = this.SpellObject.GetPrediction(target);
+                    Logging.AddEntry(LoggingEntryTrype.Debug, "Range: {0} - Width: {1} - target distance from player: {2} - Prediction: {3} - champion name: {4}", this.Range, this.Width, target.Distance(ObjectManager.Player), prediction.Hitchance, target.ChampionName);
+                    if (prediction.Hitchance >= HitChance.High)
+                    {
+                        this.SpellObject.Cast(target);
                     }
-                    else
+                }
+                else
+                {
+                    if (MyMenu.RootMenu.Item("comboq2use").IsActive())
                     {
-                        if (MyMenu.RootMenu.Item("comboq2use").IsActive())
+                        if (ObjectManager.Player.IsDashing() || !Misc.HasBlindMonkQOne(target) || (Misc.HasBlindMonkQOne(target) && target.Distance(ObjectManager.Player) > BlindMonkTwoRange))
                         {
-                            if (ObjectManager.Player.IsDashing() || !Misc.HasBlindMonkQOne(target) || (Misc.HasBlindMonkQOne(target) && target.Distance(ObjectManager.Player) > BlindMonkTwoRange))
-                            {
-                                return;
-                            }
+                            return;
+                        }
 
-                            if (Misc.CanCastQ2 || this.SpellObject.GetDamage(target, 1) > target.Health + target.PhysicalShield 
-                                || ObjectManager.Player.Distance(target) > Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) || PassiveManager.FlurryStacks == 0)
-                            {
-                                this.SpellObject.Cast();
-                            }
+                        if (Misc.CanCastQ2 || this.SpellObject.GetDamage(target, 1) > target.Health + target.PhysicalShield 
+                            || ObjectManager.Player.Distance(target) > Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) || PassiveManager.FlurryStacks == 0)
+                        {
+                            this.SpellObject.Cast();
                         }
                     }
                 }
+                
             }
             catch (Exception e)
             {
