@@ -85,7 +85,7 @@
                 if (Misc.IsQOne)
                 {
                     var prediction = this.SpellObject.GetPrediction(target);
-                    Logging.AddEntry(LoggingEntryTrype.Debug, "Range: {0} - Width: {1} - target distance from player: {2} - Prediction: {3} - champion name: {4}", this.Range, this.Width, target.Distance(ObjectManager.Player), prediction.Hitchance, target.ChampionName);
+                    Logging.AddEntry(LoggingEntryType.Debug, "Range: {0} - Width: {1} - target distance from player: {2} - Prediction: {3} - champion name: {4}", this.Range, this.Width, target.Distance(ObjectManager.Player), prediction.Hitchance, target.ChampionName);
                     if (prediction.Hitchance >= HitChance.High)
                     {
                         this.SpellObject.Cast(target);
@@ -111,7 +111,7 @@
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@SpellQ.cs: Can not run OnCombo - {0}", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@SpellQ.cs: Can not run OnCombo - {0}", e);
                 throw;
             }
         }

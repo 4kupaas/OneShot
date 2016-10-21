@@ -62,7 +62,7 @@
     <Compile Include="Components\Spells\SpellQ.cs" />
     <Compile Include="Components\Spells\SpellR.cs" />
     <Compile Include="Components\Spells\SpellW.cs" />
-    <Compile Include="Enumerations\LoggingEntryTrype.cs" />
+    <Compile Include="Enumerations\LoggingEntryType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Components\SpellManagers\InsecManager.cs" />

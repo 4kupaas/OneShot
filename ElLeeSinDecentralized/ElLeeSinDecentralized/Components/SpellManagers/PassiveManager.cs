@@ -47,7 +47,7 @@
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@PassiveManager.cs: Can not {0} -", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@PassiveManager.cs: Can not {0} -", e);
                 throw;
             }
         }
@@ -100,7 +100,7 @@
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@PassiveManager.cs: Can not {0} -", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@PassiveManager.cs: Can not {0} -", e);
                 throw;
             }
         }

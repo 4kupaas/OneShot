@@ -113,7 +113,7 @@
 
                         if (enemiesCount.Count == 0)
                         {
-                            Logging.AddEntry(LoggingEntryTrype.Debug, "@SpellE.cs: Returning");
+                            Logging.AddEntry(LoggingEntryType.Debug, "@SpellE.cs: Returning");
                             return;
                         }
 
@@ -121,14 +121,14 @@
                             || enemiesCount.Any(t => t.Distance(ObjectManager.Player) > Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) + 60))
                         {
                             this.SpellObject.Cast();
-                            Logging.AddEntry(LoggingEntryTrype.Debug, "@SpellE.cs: Casted second E");
+                            Logging.AddEntry(LoggingEntryType.Debug, "@SpellE.cs: Casted second E");
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@SpellE.cs: Can not run OnCombo - {0}", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@SpellE.cs: Can not run OnCombo - {0}", e);
                 throw;
             }
         }

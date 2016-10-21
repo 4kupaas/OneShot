@@ -41,12 +41,12 @@
                         this.Collision,
                         this.SkillshotType);
 
-                    Logging.AddEntry(LoggingEntryTrype.Debug, "Delay: {0} - Width: {1} - Speed: {2} - Collision: {3} - SkillshotType : {4} - Slot: {5}", this.Delay, this.Width, this.Speed, this.Collision, this.SkillshotType, this.SpellSlot);
+                    Logging.AddEntry(LoggingEntryType.Debug, "Delay: {0} - Width: {1} - Speed: {2} - Collision: {3} - SkillshotType : {4} - Slot: {5}", this.Delay, this.Width, this.Speed, this.Collision, this.SkillshotType, this.SpellSlot);
                 }
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@ISpell.cs: Can not initialize the base class - {0}", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@ISpell.cs: Can not initialize the base class - {0}", e);
                 throw;
             }
         }
