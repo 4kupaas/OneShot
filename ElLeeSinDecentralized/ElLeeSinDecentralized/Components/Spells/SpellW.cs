@@ -68,8 +68,6 @@
                 if (target != null)
                 {
                 }
-
-                //WardManager.WardjumpHandler(Game.CursorPos, maxrangeJump: true);
             }
             catch (Exception e)
             {
@@ -93,21 +91,8 @@
         {
             if (MyMenu.RootMenu.Item("wardjump.key").GetValue<KeyBind>().Active)
             {
+                ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition.Extend(Game.CursorPos, 250), false);
                 WardManager.WardjumpHandler(Game.CursorPos);
-            }
-
-            if (WardManager.WardJumping)
-            {
-                if (Utils.TickCount - WardManager.LastWardPlacement < Game.Ping + 100)
-                {
-                    return;
-                }
-
-                if (!this.SpellSlot.IsReady() || !Misc.IsWOne)
-                {
-                    WardManager.WardJumping = false;
-                    return;
-                }
             }
         }
 

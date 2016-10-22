@@ -126,7 +126,7 @@
 
                 if (jumpToAllies)
                 {
-                    var closestAlly = HeroManager.Allies.Where(x => x.Distance(ObjectManager.Player) < Misc.SpellW.Range && x.Distance(playerPosition) < 200).OrderByDescending(i => i.Distance(ObjectManager.Player))
+                    var closestAlly = HeroManager.Allies.Where(x => x.Distance(ObjectManager.Player) < Misc.SpellW.Range && x.Distance(position) < 200 && !x.IsMe).OrderByDescending(i => i.Distance(ObjectManager.Player))
                             .ToList()
                             .FirstOrDefault();
 
@@ -149,7 +149,7 @@
                         ObjectManager.Get<Obj_AI_Minion>()
                             .Where(
                                 m =>
-                                    m.IsAlly && m.Distance(ObjectManager.Player) < Misc.SpellW.Range && m.Distance(playerPosition) < 200
+                                    m.IsAlly && m.Distance(ObjectManager.Player) < Misc.SpellW.Range && m.Distance(position) < 200
                                     && !m.Name.ToLower().Contains("ward"))
                             .OrderByDescending(i => i.Distance(ObjectManager.Player))
                             .ToList()

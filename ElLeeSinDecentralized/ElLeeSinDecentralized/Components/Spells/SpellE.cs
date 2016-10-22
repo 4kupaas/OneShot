@@ -121,7 +121,6 @@
                             || enemiesCount.Any(t => t.Distance(ObjectManager.Player) > Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) + 60))
                         {
                             this.SpellObject.Cast();
-                            Logging.AddEntry(LoggingEntryType.Debug, "@SpellE.cs: Casted second E");
                         }
                     }
                 }
