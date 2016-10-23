@@ -13,59 +13,19 @@
     /// <summary>
     ///     Base class for the spells.
     /// </summary>
-    internal class ISpell
+    internal abstract class ISpell
     {
-        #region Constructors and Destructors
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ISpell" /> class.
-        ///     The initialize.
-        /// </summary>
-        [SuppressMessage("ReSharper", "DoNotCallOverridableMethodsInConstructor", Justification = "Input is known.")]
-        internal ISpell()
-        {
-            try
-            {
-                this.SpellObject = new Spell(this.SpellSlot, this.Range, this.DamageType);
-
-                if (this.Targeted)
-                {
-                    this.SpellObject.SetTargetted(this.Delay, this.Speed);
-                }
-                else
-                {
-                    this.SpellObject.SetSkillshot(
-                        this.Delay,
-                        this.Width,
-                        this.Speed,
-                        this.Collision,
-                        this.SkillshotType);
-
-                    Logging.AddEntry(LoggingEntryType.Debug, "Delay: {0} - Width: {1} - Speed: {2} - Collision: {3} - SkillshotType : {4} - Slot: {5}", this.Delay, this.Width, this.Speed, this.Collision, this.SkillshotType, this.SpellSlot);
-                }
-            }
-            catch (Exception e)
-            {
-                Logging.AddEntry(LoggingEntryType.Debug, "@ISpell.cs: Can not initialize the base class - {0}", e);
-                throw;
-            }
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
         ///     Gets or sets a value indicating whether the spell is an AoE spell.
         /// </summary>
-        [DefaultValue(false)]
-        internal virtual bool Aoe { get; set; }
+        internal virtual bool Aoe { get; set; } = false;
 
         /// <summary>
         ///     Gets or sets a value indicating whether the spell has collision.
         /// </summary>
-        [DefaultValue(false)]
-        internal virtual bool Collision { get; set; }
+        internal virtual bool Collision { get; set; } = false;
 
         /// <summary>
         ///     Gets or sets the damage type.
@@ -95,7 +55,50 @@
         /// <summary>
         ///     Gets or sets the spell object.
         /// </summary>
-        internal Spell SpellObject { get; set; }
+        internal Spell SpellObject
+        {
+            get
+            {
+                if (this.spellObject != null)
+                {
+                    return this.spellObject;
+                }
+
+                this.spellObject = new Spell(this.SpellSlot, this.Range, this.DamageType);
+
+                if (this.Targeted)
+                {
+                    this.spellObject.SetTargetted(this.Delay, this.Speed);
+                }
+                else
+                {
+                    this.spellObject.SetSkillshot(
+                        this.Delay,
+                        this.Width,
+                        this.Speed,
+                        this.Collision,
+                        this.SkillshotType);
+
+                    Logging.AddEntry(
+                        LoggingEntryType.Debug,
+                        "Delay: {0} - Width: {1} - Speed: {2} - Collision: {3} - SkillshotType : {4} - Slot: {5}",
+                        this.Delay,
+                        this.Width,
+                        this.Speed,
+                        this.Collision,
+                        this.SkillshotType,
+                        this.SpellSlot);
+                }
+
+                return this.spellObject;
+            }
+            set
+            {
+                this.spellObject = value;
+            }
+        }
+
+        private Spell spellObject;
 
         /// <summary>
         ///     Gets or sets the spell slot.
@@ -105,8 +108,7 @@
         /// <summary>
         ///     Gets or sets a value indicating whether the spell is targeted.
         /// </summary>
-        [DefaultValue(false)]
-        internal virtual bool Targeted { get; set; }
+        internal virtual bool Targeted { get; set; } = false;
 
         /// <summary>
         ///     Gets or sets the width.
