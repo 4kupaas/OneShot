@@ -89,12 +89,21 @@
                         if ((!MyMenu.RootMenu.Item("comboealways").IsActive()
                              && Misc.LastQ + 200 < Environment.TickCount) || this.SpellObject.IsKillable(target))
                         {
-                            this.SpellObject.Cast(target);
-                            Misc.LastE = Environment.TickCount;
+                            var prediction = this.SpellObject.GetPrediction(target);
+                            Logging.AddEntry(LoggingEntryType.Debug, "Hitchance E: {0}", prediction.Hitchance);
+                            if (prediction.Hitchance >= HitChance.VeryHigh)
+                            {
+                                this.SpellObject.Cast(prediction.CastPosition);
+                                Misc.LastE = Environment.TickCount;
+                            }
                         }
                         else
                         {
-                            this.SpellObject.Cast(target);
+                            var prediction = this.SpellObject.GetPrediction(target);
+                            if (prediction.Hitchance >= HitChance.VeryHigh)
+                            {
+                                this.SpellObject.Cast(prediction.CastPosition);
+                            }
                         }
                     }
 
@@ -109,7 +118,7 @@
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@SpellE.cs: Can not run OnCombo - {0}", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@SpellE.cs: Can not run OnCombo - {0}", e);
                 throw;
             }
         }

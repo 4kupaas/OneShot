@@ -76,7 +76,7 @@
         {
             try
             {
-                var target = Misc.GetTarget(this.Range, this.DamageType);
+                var target = Misc.GetTarget(1100f, this.DamageType);
                 if (target == null)
                 {
                     return;

@@ -37,15 +37,16 @@
         {
             try
             {
-                this.LoadSpells(new List<ISpell>() { new SpellQ(), new SpellE(), new SpellR() });
                 Misc.SpellQ = new SpellQ();
                 Misc.SpellE = new SpellE();
                 Misc.SpellR = new SpellR();
                 Misc.BlightedQuiver = new Spell(SpellSlot.W, 0, TargetSelector.DamageType.Magical);
+
+                this.LoadSpells(new List<ISpell>() { new SpellQ(), new SpellE(), new SpellR() });
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@SpellManager.cs: Can not initialize the spells - {0}", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@SpellManager.cs: Can not initialize the spells - {0}", e);
                 throw;
             }
 
@@ -92,7 +93,7 @@
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@SpellManager.cs: AntiGapcloser - {0}", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@SpellManager.cs: AntiGapcloser - {0}", e);
                 throw;
             }
         }
@@ -139,7 +140,7 @@
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@SpellManager.cs: Can not get spell active state for slot {0} - {1}", spellSlot.ToString(), e);
+                Logging.AddEntry(LoggingEntryType.Error, "@SpellManager.cs: Can not get spell active state for slot {0} - {1}", spellSlot.ToString(), e);
                 throw;
             }
         }

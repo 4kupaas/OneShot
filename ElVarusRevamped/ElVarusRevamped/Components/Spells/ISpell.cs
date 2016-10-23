@@ -13,61 +13,19 @@
     /// <summary>
     ///     Base class for the spells.
     /// </summary>
-    internal class ISpell
+    internal abstract class ISpell
     {
-        #region Constructors and Destructors
-    
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="ISpell" /> class.
-        ///     The initialize.
-        /// </summary>
-        [SuppressMessage("ReSharper", "DoNotCallOverridableMethodsInConstructor", Justification = "Input is known.")]
-        internal ISpell()
-        {
-            try
-            {
-                this.SpellObject = new Spell(this.SpellSlot, this.Range, this.DamageType);
-
-                if (this.Targeted)
-                {
-                    this.SpellObject.SetTargetted(this.Delay, this.Speed);
-                }
-                else if (this.Charged)
-                {
-                    this.SpellObject.SetCharged(this.SpellName, this.BuffName, this.MinRange, this.MaxRange, this.DeltaT);
-                }
-                else
-                {
-                    this.SpellObject.SetSkillshot(
-                        this.Delay,
-                        this.Width,
-                        this.Speed,
-                        this.Collision,
-                        this.SkillshotType);
-                }
-            }
-            catch (Exception e)
-            {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@ISpell.cs: Can not initialize the base class - {0}", e);
-                throw;
-            }
-        }
-
-        #endregion
-
         #region Properties
 
         /// <summary>
         ///     Gets or sets a value indicating whether the spell is an AoE spell.
         /// </summary>
-        [DefaultValue(false)]
-        internal virtual bool Aoe { get; set; }
+        internal virtual bool Aoe { get; set; } = false;
 
         /// <summary>
         ///     Gets or sets a value indicating whether the spell has collision.
         /// </summary>
-        [DefaultValue(false)]
-        internal virtual bool Collision { get; set; }
+        internal virtual bool Collision { get; set; } = false;
 
         /// <summary>
         ///     Gets or sets the damage type.
@@ -95,31 +53,9 @@
         internal virtual float Speed { get; set; }
 
         /// <summary>
-        ///     Gets or sets the spell object.
-        /// </summary>
-        internal Spell SpellObject { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the spell slot.
-        /// </summary>
-        internal virtual SpellSlot SpellSlot { get; set; }
-
-        /// <summary>
-        ///     Gets or sets a value indicating whether the spell is targeted.
-        /// </summary>
-        [DefaultValue(false)]
-        internal virtual bool Targeted { get; set; }
-
-        /// <summary>
         ///     Gets or sets a value indicating whether the spell is charged.
         /// </summary>
-        [DefaultValue(false)]
-        internal virtual bool Charged { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the width.
-        /// </summary>
-        internal virtual float Width { get; set; }
+        internal virtual bool Charged { get; set; } = false;
 
         /// <summary>
         ///     Gets or sets the max range.
@@ -145,6 +81,65 @@
         ///     Gets or sets the buffname.
         /// </summary>
         internal virtual string BuffName { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the spell object.
+        /// </summary>
+        internal Spell SpellObject
+        {
+            get
+            {
+                if (this.spellObject != null)
+                {
+                    return this.spellObject;
+                }
+
+                this.spellObject = new Spell(this.SpellSlot, this.Range, this.DamageType);
+
+                if (this.Charged)
+                {
+                    this.SpellObject.SetCharged(this.SpellName, this.BuffName, this.MinRange, this.MaxRange, this.DeltaT);
+                }
+
+                if (this.Targeted)
+                {
+                    this.spellObject.SetTargetted(this.Delay, this.Speed);
+                }
+                else
+                {
+                    this.spellObject.SetSkillshot(
+                        this.Delay,
+                        this.Width,
+                        this.Speed,
+                        this.Collision,
+                        this.SkillshotType);
+                }
+
+                return this.spellObject;
+            }
+            set
+            {
+                this.spellObject = value;
+            }
+        }
+
+        private Spell spellObject;
+
+        /// <summary>
+        ///     Gets or sets the spell slot.
+        /// </summary>
+        internal virtual SpellSlot SpellSlot { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the spell is targeted.
+        /// </summary>
+        internal virtual bool Targeted { get; set; } = false;
+
+        /// <summary>
+        ///     Gets or sets the width.
+        /// </summary>
+        internal virtual float Width { get; set; }
+
 
         #endregion
 

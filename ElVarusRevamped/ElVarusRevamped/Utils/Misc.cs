@@ -59,7 +59,7 @@
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@Misc.cs: Can not return target - {0}", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@Misc.cs: Can not return target - {0}", e);
                 throw;
             }
         }
@@ -148,7 +148,7 @@
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@Misc.cs: Can not return target - {0}", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@Misc.cs: Can not return target - {0}", e);
                 throw;
             }
         }

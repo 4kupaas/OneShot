@@ -86,6 +86,11 @@
         /// </summary>
         internal override bool Charged => true;
 
+        /// <summary>
+        ///     Sets the Targeted spell.
+        /// </summary>
+        internal override bool Targeted => false;
+
         #endregion
 
         #region Methods
@@ -104,8 +109,8 @@
 
                 var target = Misc.GetTarget((this.MaxRange + this.Width) * 1.1f, this.DamageType);
                 if (target != null)
-                {                  
-                    if (!this.SpellObject.IsCharging)
+                { 
+                   if (!this.SpellObject.IsCharging)
                     {
                         if (MyMenu.RootMenu.Item("comboqalways").IsActive()
                             || Misc.QIsKillable(target, Misc.GetQCollisionsCount(target, this.SpellObject.GetPrediction(target).CastPosition)) 
@@ -117,27 +122,22 @@
 
                     if (this.SpellObject.IsCharging)
                     {
-                        if (MyMenu.RootMenu.Item("comboqalways").IsActive() || this.Range >= this.MaxRange || target.Distance(ObjectManager.Player) < this.Range + 250 || (this.SpellObject.GetPrediction(target).Hitchance >= HitChance.VeryHigh)
-                            && target.Distance(ObjectManager.Player) > this.Range + 250
-                            && target.Distance(ObjectManager.Player) < this.MaxRange || ObjectManager.Player.HealthPercent <= MyMenu.RootMenu.Item("comboq.fast").GetValue<Slider>().Value)
+                        if ((!MyMenu.RootMenu.Item("comboqalways").IsActive()
+                               && Misc.LastE + 200 < Environment.TickCount) ||
+                               Misc.QIsKillable(target, Misc.GetQCollisionsCount(target, this.SpellObject.GetPrediction(target).CastPosition)))
                         {
-                            if ((!MyMenu.RootMenu.Item("comboqalways").IsActive()
-                                 && Misc.LastE + 200 < Environment.TickCount) || 
-                                 Misc.QIsKillable(target, Misc.GetQCollisionsCount(target, this.SpellObject.GetPrediction(target).CastPosition)))
+                            var prediction = this.SpellObject.GetPrediction(target);
+                            if (prediction.Hitchance >= HitChance.VeryHigh)
                             {
-
                                 this.SpellObject.Cast(target);
-                               /*ar prediction = this.SpellObject.GetPrediction(target);
-                                if (prediction.Hitchance >= HitChance.VeryHigh)
-                                {
-                                    this.SpellObject.Cast(target);
-                                }*/
                             }
-                            else
+                        }
+                        else
+                        {
+                            var prediction = this.SpellObject.GetPrediction(target);
+                            if (prediction.Hitchance >= HitChance.VeryHigh)
                             {
-
                                 this.SpellObject.Cast(target);
-
                             }
                         }
                     }
@@ -145,7 +145,7 @@
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@SpellQ.cs: Can not run OnCombo - {0}", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@SpellQ.cs: Can not run OnCombo - {0}", e);
                 throw;
             }
         }
