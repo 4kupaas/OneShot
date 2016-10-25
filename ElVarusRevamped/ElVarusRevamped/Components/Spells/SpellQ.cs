@@ -126,21 +126,11 @@
                                && Misc.LastE + 200 < Environment.TickCount) ||
                                Misc.QIsKillable(target, Misc.GetQCollisionsCount(target, this.SpellObject.GetPrediction(target).CastPosition)))
                         {
-                            var prediction = this.SpellObject.GetPrediction(target);
-
-                            Logging.AddEntry(LoggingEntryType.Debug, "Range: {0} - Width: {1} - target distance from player: {2} - Prediction: {3} - champion name: {4}", this.Range, this.Width, target.Distance(ObjectManager.Player), prediction.Hitchance, target.ChampionName);
-                            if (prediction.Hitchance >= HitChance.VeryHigh)
-                            {
-                                this.SpellObject.Cast(target);
-                            }
+                            this.SpellObject.Cast(target);
                         }
                         else
                         {
-                            var prediction = this.SpellObject.GetPrediction(target);
-                            if (prediction.Hitchance >= HitChance.VeryHigh)
-                            {
-                                this.SpellObject.Cast(target);
-                            }
+                            this.SpellObject.Cast(target);
                         }
                     }
                 }
