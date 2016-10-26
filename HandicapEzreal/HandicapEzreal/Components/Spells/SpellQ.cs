@@ -78,7 +78,6 @@
                 if (target != null)
                 {
                     var prediction = this.SpellObject.GetPrediction(target);
-                    Logging.AddEntry(LoggingEntryType.Debug, "@SpellQ.cs: Hitchance: {0}", prediction.Hitchance);
                     if (prediction.Hitchance >= HitChance.High)
                     {
                         this.SpellObject.Cast(prediction.CastPosition);

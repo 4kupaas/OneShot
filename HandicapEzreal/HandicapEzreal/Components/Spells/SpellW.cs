@@ -73,7 +73,6 @@
                 if (target != null)
                 {
                     var prediction = this.SpellObject.GetPrediction(target);
-                    Logging.AddEntry(LoggingEntryType.Debug, "@SpellW.cs: Hitchance: {0}", prediction.Hitchance);
                     if (prediction.Hitchance >= HitChance.Medium)
                     {
                         this.SpellObject.Cast(prediction.CastPosition);
