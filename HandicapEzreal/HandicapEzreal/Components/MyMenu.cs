@@ -92,7 +92,7 @@
                         nodeLastHit.AddItem(
                             new MenuItem("lasthit" + spellSlotNameLower + "mana", "Min. Mana").SetValue(new Slider(50)));
 
-                        nodeCombo.AddItem(new MenuItem("lasthit.mode", "Q mode").SetValue(new StringList(new[] { "Always", "Out of range" }, 0)));
+                        nodeLastHit.AddItem(new MenuItem("lasthit.mode", "Q mode").SetValue(new StringList(new[] { "Always", "Out of range" }, 0)));
                     }
                     node.AddSubMenu(nodeLastHit);
                 }
