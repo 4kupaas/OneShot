@@ -18,6 +18,50 @@
         #region Properties
 
         /// <summary>
+        ///     Gets or sets the spell object.
+        /// </summary>
+        internal Spell SpellObject
+        {
+            get
+            {
+                if (this.spellObject != null)
+                {
+                    return this.spellObject;
+                }
+
+                this.spellObject = new Spell(this.SpellSlot, this.Range, this.DamageType);
+
+                if (this.Charged)
+                {
+                    this.SpellObject.SetCharged(this.SpellName, this.BuffName, this.MinRange, this.MaxRange, this.DeltaT);
+                }
+
+                if (this.Targeted)
+                {
+                    this.spellObject.SetTargetted(this.Delay, this.Speed);
+                }
+                else
+                {
+                    this.spellObject.SetSkillshot(
+                        this.Delay,
+                        this.Width,
+                        this.Speed,
+                        this.Collision,
+                        this.SkillshotType);
+                }
+
+                return this.spellObject;
+            }
+            set
+            {
+                this.spellObject = value;
+            }
+        }
+
+        private Spell spellObject;
+
+
+        /// <summary>
         ///     Gets or sets a value indicating whether the spell is an AoE spell.
         /// </summary>
         internal virtual bool Aoe { get; set; } = false;
@@ -81,49 +125,6 @@
         ///     Gets or sets the buffname.
         /// </summary>
         internal virtual string BuffName { get; set; }
-
-        /// <summary>
-        ///     Gets or sets the spell object.
-        /// </summary>
-        internal Spell SpellObject
-        {
-            get
-            {
-                if (this.spellObject != null)
-                {
-                    return this.spellObject;
-                }
-
-                this.spellObject = new Spell(this.SpellSlot, this.Range, this.DamageType);
-
-                if (this.Charged)
-                {
-                    this.SpellObject.SetCharged(this.SpellName, this.BuffName, this.MinRange, this.MaxRange, this.DeltaT);
-                }
-
-                if (this.Targeted)
-                {
-                    this.spellObject.SetTargetted(this.Delay, this.Speed);
-                }
-                else
-                {
-                    this.spellObject.SetSkillshot(
-                        this.Delay,
-                        this.Width,
-                        this.Speed,
-                        this.Collision,
-                        this.SkillshotType);
-                }
-
-                return this.spellObject;
-            }
-            set
-            {
-                this.spellObject = value;
-            }
-        }
-
-        private Spell spellObject;
 
         /// <summary>
         ///     Gets or sets the spell slot.

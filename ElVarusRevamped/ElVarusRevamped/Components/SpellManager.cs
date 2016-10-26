@@ -54,8 +54,6 @@
             AntiGapcloser.OnEnemyGapcloser += this.OnEnemyGapcloser;
         }
 
-        
-
         /// <summary>
         ///     
         /// </summary>
@@ -158,7 +156,7 @@
             if (MyMenu.RootMenu.Item("forceqalways").IsActive())
             {
                 var target = HeroManager.Enemies.Find(x => x.IsValidTarget(ObjectManager.Player.AttackRange + 150) 
-                    && Misc.GetWStacks(x) > 0 && !x.IsDead && x.IsVisible);
+                    && (Misc.BlightedQuiver.Level > 0 && Misc.GetWStacks(x) > 0) && !x.IsDead && x.IsVisible);
 
                 if (target != null)
                 {
@@ -166,28 +164,47 @@
                 }
             }
 
-            this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.Combo))
-                        .ToList()
-                        .ForEach(spell => spell.OnCombo());
+            // clean this soon
+            switch (Program.Orbwalker.ActiveMode)
+            {
+                case Orbwalking.OrbwalkingMode.Combo:
+                    {
+                        this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.Combo))
+                            .ToList()
+                            .ForEach(spell => spell.OnCombo());
+                        break;
+                    }
 
-            this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.Mixed))
-                        .ToList()
-                        .ForEach(spell => spell.OnMixed());
+                case Orbwalking.OrbwalkingMode.Mixed:
+                    {
+                        this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.Mixed))
+                            .ToList()
+                            .ForEach(spell => spell.OnMixed());
+                        break;
+                    }
 
-            this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LaneClear))
-                        .ToList()
-                        .ForEach(spell => spell.OnLaneClear());
+                case Orbwalking.OrbwalkingMode.LaneClear:
+                    {
+                        this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LaneClear))
+                            .ToList()
+                            .ForEach(spell => spell.OnLaneClear());
 
-            this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LaneClear))
-                        .ToList()
-                        .ForEach(spell => spell.OnJungleClear());
+                        this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LaneClear))
+                            .ToList()
+                            .ForEach(spell => spell.OnJungleClear());
+                        break;
+                    }
 
-            this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LastHit))
-                        .ToList()
-                        .ForEach(spell => spell.OnLastHit());
+                case Orbwalking.OrbwalkingMode.LastHit:
+                    {
+                        this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LastHit))
+                            .ToList()
+                            .ForEach(spell => spell.OnLastHit());
+                        break;
+                    }
+            }
 
             this.spells.ToList().ForEach(spell => spell.OnUpdate());
-
             this.Killsteal();
         }
 

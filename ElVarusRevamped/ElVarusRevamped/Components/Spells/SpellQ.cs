@@ -29,7 +29,7 @@
         /// <summary>
         ///     Gets the delay.
         /// </summary>
-        internal override float Delay => 250f;
+        internal override float Delay => 0.25f;
 
         /// <summary>
         ///     Gets the range.
@@ -44,7 +44,7 @@
         /// <summary>
         ///     Gets the speed.
         /// </summary>
-        internal override float Speed => 1800f;
+        internal override float Speed => 1650f;
 
         /// <summary>   
         ///     Gets the spell slot.
@@ -64,7 +64,7 @@
         /// <summary>
         ///     Gets the max range.
         /// </summary>
-        internal override int MaxRange => 1700;
+        internal override int MaxRange => 1600;
 
         /// <summary>
         ///     Gets the delta T
@@ -102,36 +102,46 @@
         {
             try
             {
-                if (this.SpellObject == null)
+                var target = Misc.GetTarget((this.MaxRange + this.Width) * 1.1f, this.DamageType);
+                if (target == null)
                 {
                     return;
                 }
 
-                var target = Misc.GetTarget((this.MaxRange + this.Width) * 1.1f, this.DamageType);
-                if (target != null)
-                { 
-                   if (!this.SpellObject.IsCharging)
+                if (!this.SpellObject.IsCharging)
+                {
+                    if (MyMenu.RootMenu.Item("comboqalways").IsActive()
+                        || Misc.QIsKillable(target, Misc.GetQCollisionsCount(target, this.SpellObject.GetPrediction(target).CastPosition)) 
+                        || (Misc.BlightedQuiver.Level > 0 && Misc.GetWStacks(target) >= MyMenu.RootMenu.Item("combow.count").GetValue<Slider>().Value && Misc.LastE + 1000 < Environment.TickCount))
                     {
-                        if (MyMenu.RootMenu.Item("comboqalways").IsActive()
-                            || Misc.QIsKillable(target, Misc.GetQCollisionsCount(target, this.SpellObject.GetPrediction(target).CastPosition)) 
-                            || (Misc.BlightedQuiver.Level > 0 && Misc.GetWStacks(target) >= MyMenu.RootMenu.Item("combow.count").GetValue<Slider>().Value && Misc.LastE + 1000 < Environment.TickCount))
+                        this.SpellObject.StartCharging();
+                    }
+                }
+
+                if (this.SpellObject.IsCharging)
+                {
+                    if ((!MyMenu.RootMenu.Item("comboqalways").IsActive()
+                            && Misc.LastE + 200 < Environment.TickCount) ||
+                            Misc.QIsKillable(target, Misc.GetQCollisionsCount(target, this.SpellObject.GetPrediction(target).CastPosition)))
+                    {
+                        var pred = this.SpellObject.GetPrediction(target);
+                        if (pred.Hitchance >= HitChance.High)
                         {
-                            this.SpellObject.StartCharging();
+                            this.SpellObject.Cast(pred.CastPosition);
+                        }
+                    }
+                    else
+                    {
+                        var pred = this.SpellObject.GetPrediction(target);
+                        if (pred.Hitchance >= HitChance.High)
+                        {
+                            this.SpellObject.Cast(pred.CastPosition);
                         }
                     }
 
-                    if (this.SpellObject.IsCharging)
+                    if (ObjectManager.Player.Distance(target) <= Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) + 200)
                     {
-                        if ((!MyMenu.RootMenu.Item("comboqalways").IsActive()
-                               && Misc.LastE + 200 < Environment.TickCount) ||
-                               Misc.QIsKillable(target, Misc.GetQCollisionsCount(target, this.SpellObject.GetPrediction(target).CastPosition)))
-                        {
-                            this.SpellObject.Cast(target);
-                        }
-                        else
-                        {
-                            this.SpellObject.Cast(target);
-                        }
+                        this.SpellObject.Cast(target);
                     }
                 }
             }
