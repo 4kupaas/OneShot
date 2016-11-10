@@ -77,6 +77,11 @@
                 var target = Misc.GetTarget(this.Range, this.DamageType);
                 if (target != null)
                 {
+                    if (BuffManager.HasPassive && target.Distance(ObjectManager.Player) > 400f)
+                    {
+                        return;
+                    }
+
                     if (BuffManager.HasUltimate && !ObjectManager.Player.IsDashing())
                     {
                         return;
