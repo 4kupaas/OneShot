@@ -22,11 +22,6 @@
         public static SpellQ SpellQ;
 
         /// <summary>
-        ///     Spell W
-        /// </summary>
-        public static SpellW SpellW;
-
-        /// <summary>
         ///     Spell E
         /// </summary>
         public static SpellE SpellE;

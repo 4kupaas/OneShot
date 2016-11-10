@@ -131,26 +131,6 @@
             }
         }
 
-        /// <summary>
-        ///     The on last hit callback.
-        /// </summary>
-        internal override void OnLastHit()
-        {
-        }
-
-        /// <summary>
-        ///     The on lane clear callback.
-        /// </summary>
-        internal override void OnLaneClear()
-        {
-        }
-
-        /// <summary>
-        ///     The on jungle clear callback.
-        /// </summary>
-        internal override void OnJungleClear()
-        {
-        }
 
         #endregion
     }

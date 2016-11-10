@@ -77,16 +77,7 @@
         /// </summary>
         internal override void OnMixed()
         {
-            /*var minion =
-                        ObjectManager.Get<Obj_AI_Minion>()
-                            .Where(x => x.IsEnemy && (x.Distance(target) <= 500f))
-                            .OrderBy(x => x.Distance(target))
-                            .FirstOrDefault();
-
-                    if (minion != null && this.SpellObject.CastOnUnit(minion))
-                    {
-                        return;
-                    }*/
+            this.OnCombo();
         }
 
 
@@ -95,6 +86,15 @@
         /// </summary>
         internal override void OnLastHit()
         {
+            var minion =
+               MinionManager.GetMinions(this.Range)
+                   .Where(obj => this.SpellObject.IsKillable(obj))
+                   .MinOrDefault(obj => obj.Health);
+
+            if (minion != null)
+            {
+                this.SpellObject.CastOnUnit(minion);
+            }
         }
 
         /// <summary>
@@ -102,13 +102,14 @@
         /// </summary>
         internal override void OnLaneClear()
         {
-        }
+            var minion =
+               MinionManager.GetMinions(this.Range)
+                   .MinOrDefault(obj => obj.Health);
 
-        /// <summary>
-        ///     The on jungle clear callback.
-        /// </summary>
-        internal override void OnJungleClear()
-        {
+            if (minion != null)
+            {
+                this.SpellObject.CastOnUnit(minion);
+            }
         }
 
         #endregion

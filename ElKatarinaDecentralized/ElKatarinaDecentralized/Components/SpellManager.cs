@@ -45,7 +45,6 @@
             {
                 this.LoadSpells(new List<ISpell>() { new SpellQ(), new SpellW(), new SpellE(), new SpellR() });
                 Misc.SpellQ = new SpellQ();
-                Misc.SpellW = new SpellW();
                 Misc.SpellE = new SpellE();
                 Misc.SpellR = new SpellR();
             }
@@ -93,7 +92,7 @@
         /// <param name="args"></param>
         private static void Obj_AI_Base_OnIssueOrder(Obj_AI_Base sender, GameObjectIssueOrderEventArgs args)
         {
-            if (MyMenu.RootMenu.Item("combo.disable.movement").IsActive() && sender.IsMe && (ObjectManager.Player.IsChannelingImportantSpell()) || Misc.HasUltimate)
+            if (MyMenu.RootMenu.Item("combo.disable.movement").IsActive() && sender.IsMe && (ObjectManager.Player.IsChannelingImportantSpell() || Misc.HasUltimate))
             {
                 args.Process = false;
             }
@@ -131,6 +130,12 @@
                         h.IsValidTarget(Misc.SpellE.Range + Misc.SpellQ.Range) && !h.IsZombie
                         && (KSTarget == null || KSTarget.NetworkId == h.NetworkId)).OrderBy(h => h.Health))
             {
+
+                if (MyMenu.RootMenu.Item("ks.tower").IsActive() && enemy.UnderTurret(true))
+                {
+                    return;
+                }
+
                 if (Misc.SpellE.SpellObject.IsInRange(enemy))
                 {
                     if (Misc.SpellQ.SpellObject.IsCastable(enemy, true) && Misc.SpellQ.SpellSlot.IsReady() && MyMenu.RootMenu.Item("ks.q").IsActive() && enemy.IsValidTarget(Misc.SpellQ.Range))
@@ -153,7 +158,7 @@
                                 > enemy.Health && enemy.IsValidTarget(Misc.SpellQ.Range))
                             {
                                 Misc.SpellE.SpellObject.Cast(enemy);
-                                KSTarget = enemy;   
+                                KSTarget = enemy;
                             }
                         }
                     }
@@ -198,7 +203,7 @@
 
                 if ((orbwalkerModeLower.Equals("lasthit")
                     && (spellSlotNameLower.Equals("e") || spellSlotNameLower.Equals("w")
-                        || spellSlotNameLower.Equals("r"))) || (orbwalkerModeLower.Equals("laneclear") && (spellSlotNameLower.Equals("e"))))
+                        || spellSlotNameLower.Equals("r"))) || (orbwalkerModeLower.Equals("laneclear") && (spellSlotNameLower.Equals("e") || spellSlotNameLower.Equals("w") || spellSlotNameLower.Equals("r"))))
                 {
                     return false;
                 }
@@ -247,9 +252,6 @@
                             .ToList()
                             .ForEach(spell => spell.OnLaneClear());
 
-                        this.spells.Where(spell => IsSpellActive(spell.SpellSlot, Orbwalking.OrbwalkingMode.LaneClear))
-                            .ToList()
-                            .ForEach(spell => spell.OnJungleClear());
                         break;
                     }
 

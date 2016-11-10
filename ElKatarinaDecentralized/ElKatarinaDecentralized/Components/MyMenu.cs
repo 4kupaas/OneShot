@@ -1,12 +1,15 @@
 ﻿namespace ElKatarinaDecentralized.Components
 {
     using System;
+    using System.Drawing;
 
     using ElKatarinaDecentralized.Enumerations;
     using ElKatarinaDecentralized.Utils;
 
     using LeagueSharp;
     using LeagueSharp.Common;
+
+    using Color = SharpDX.Color;
 
     /// <summary>
     ///     The my menu class.
@@ -23,6 +26,7 @@
             RootMenu = new Menu("ElKatarinaDecentralized", "ElKatarinaDecentralized", true);
             RootMenu.AddSubMenu(GetTargetSelectorNode());
             RootMenu.AddSubMenu(GetOrbwalkerNode());
+            RootMenu.AddSubMenu(GetFleeNode());
             RootMenu.AddSubMenu(GetKillstealNode());
 
             RootMenu.AddToMainMenu();
@@ -60,6 +64,11 @@
                 {
                     nodeCombo.AddItem(new MenuItem("combo" + spellSlotNameLower + "use", "Use " + spellSlotName).SetValue(true));
 
+                    if (spellSlotNameLower.Equals("e", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        nodeCombo.AddItem(new MenuItem("combo.e.tower", "E under tower").SetValue(false));
+                    }
+
                     if (spellSlotNameLower.Equals("r", StringComparison.InvariantCultureIgnoreCase))
                     {
                         nodeCombo.AddItem(
@@ -78,12 +87,16 @@
 
                 node.AddSubMenu(nodeCombo);
 
-                var nodeMixed = new Menu("Mixed", spellSlotNameLower + "mixedmenu");
+                if (!spellSlotNameLower.Equals("r", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    nodeMixed.AddItem(new MenuItem("mixed" + spellSlotNameLower + "use", "Use " + spellSlotName).SetValue(true));
-                }
+                    var nodeMixed = new Menu("Mixed", spellSlotNameLower + "mixedmenu");
+                    {
+                        nodeMixed.AddItem(
+                            new MenuItem("mixed" + spellSlotNameLower + "use", "Use " + spellSlotName).SetValue(true));
+                    }
 
-                node.AddSubMenu(nodeMixed);
+                    node.AddSubMenu(nodeMixed);
+                }
 
                 if (spellSlotNameLower.Equals("q", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -96,7 +109,7 @@
                 }
 
 
-                if (!spellSlotNameLower.Equals("e", StringComparison.InvariantCultureIgnoreCase))
+                if (spellSlotNameLower.Equals("q", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var nodeLaneClear = new Menu("Clear", spellSlotNameLower + "laneclearmenu");
                     {
@@ -129,14 +142,31 @@
             return node;
         }
 
-        /// <summary>
-        ///     The get items node.
-        /// </summary>
-        private static Menu GetKillstealNode()
+
+    /// <summary>
+    ///     The get items node.
+    /// </summary>
+    private static Menu GetFleeNode()
+    {
+        var node = new Menu("Flee", "Flee").SetFontStyle(FontStyle.Bold, Color.BlueViolet);
         {
-            var node = new Menu("Killsteal", "Killsteal");
+            node.AddItem(
+                    new MenuItem("wardjump.key", "Flee key").SetValue(new KeyBind("Z".ToCharArray()[0], KeyBindType.Press)))
+                .SetTooltip("Jump to minions and allies");
+        }
+
+        return node;
+    }
+
+    /// <summary>
+    ///     The get items node.
+    /// </summary>
+    private static Menu GetKillstealNode()
+        {
+            var node = new Menu("Killsteal", "Killsteal").SetFontStyle(FontStyle.Bold, Color.Pink);
             {
                 node.AddItem(new MenuItem("ks.activated", "Enable killsteal").SetValue(true));
+                node.AddItem(new MenuItem("ks.tower", "Killsteal under tower").SetValue(false));
                 node.AddItem(new MenuItem("ks.q", "Use Q").SetValue(true));
                 node.AddItem(new MenuItem("ks.e", "Use E").SetValue(true));
                 node.AddItem(new MenuItem("ks.r", "Use R").SetValue(false));

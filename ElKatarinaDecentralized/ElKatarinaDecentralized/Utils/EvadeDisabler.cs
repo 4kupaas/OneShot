@@ -5,9 +5,6 @@
     using LeagueSharp;
     using LeagueSharp.Common;
 
-    /// <summary>
-    ///     Get aids trees
-    /// </summary>
     public class EvadeDisabler
     {
         private static int LastEvadeDisableT;
@@ -34,7 +31,6 @@
         {
             get { return Menu.GetMenu("Evade#", "Evade"); }
         }
-
 
         private static MenuItem EzEvadeEnabled
         {

@@ -126,13 +126,6 @@
         }
 
         /// <summary>
-        /// The on jungle clear callback.
-        /// </summary>
-        internal virtual void OnJungleClear()
-        {
-        }
-
-        /// <summary>
         /// The on last hit callback.
         /// </summary>
         internal virtual void OnLastHit()

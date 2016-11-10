@@ -57,17 +57,21 @@
 
                 var target = Misc.GetTarget(this.Range, this.DamageType);
                 if (target != null)
-                {
+                { 
+                    if (MyMenu.RootMenu.Item("combo.e.tower").IsActive() && target.UnderTurret(true))
+                    {
+                        return;
+                    }
 
                     if (ObjectManager.Player.IsChannelingImportantSpell())
                     {
                         return;
                     }
 
-                    if (DaggerManager.ExistingDaggers.Any())
+                    if (DaggerManager.ExistingDaggers != null)
                     {
                         var dagger =
-                            DaggerManager.ExistingDaggers
+                            DaggerManager.ExistingDaggers.OrderBy(d => d.ExpireTime)
                                 .FirstOrDefault(
                                     d =>
                                         d.DaggerPos.Distance(target.ServerPosition)
@@ -80,7 +84,7 @@
                         }
                     }
 
-                    if (!Misc.SpellQ.SpellSlot.IsReady() && Misc.SpellQ.SpellObject.LastCastedDelay(1000))
+                    if (!Misc.SpellQ.SpellSlot.IsReady() && Misc.SpellQ.SpellObject.LastCastedDelay(2200))
                     {
                         this.SpellObject.Cast(target);
                     }
@@ -101,26 +105,16 @@
             this.OnCombo();
         }
 
-
         /// <summary>
-        ///     The on last hit callback.
+        ///     The on update callback.
         /// </summary>
-        internal override void OnLastHit()
+        internal override void OnUpdate()
         {
-        }
-
-        /// <summary>
-        ///     The on lane clear callback.
-        /// </summary>
-        internal override void OnLaneClear()
-        {
-        }
-
-        /// <summary>
-        ///     The on jungle clear callback.
-        /// </summary>
-        internal override void OnJungleClear()
-        {
+            if (MyMenu.RootMenu.Item("wardjump.key").GetValue<KeyBind>().Active)
+            {
+                ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition.Extend(Game.CursorPos, 250), false);
+                FleeManager.JumpHandler(Game.CursorPos);
+            }
         }
 
         #endregion
