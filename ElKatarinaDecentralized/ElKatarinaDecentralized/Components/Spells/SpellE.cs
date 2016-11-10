@@ -75,16 +75,16 @@
                                 .FirstOrDefault(
                                     d =>
                                         d.DaggerPos.Distance(target.ServerPosition)
-                                        <= d.Object.BoundingRadius + 175 && d.Object.IsValid);
+                                        <= d.Object.BoundingRadius + 200 && d.Object.IsValid);
 
                         if (dagger != null)
                         {
-                            Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to dagger position.");
+                            //Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to dagger position.");
                             this.SpellObject.Cast(dagger.DaggerPos);
                         }
                         else
                         {
-                            Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to target position.");
+                            //Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to target position.");
                             this.SpellObject.Cast(target.Position);
                         }
                     }
