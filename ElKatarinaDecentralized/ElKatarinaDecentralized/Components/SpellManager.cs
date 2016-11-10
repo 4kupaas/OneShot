@@ -201,7 +201,9 @@
                 var orbwalkerModeLower = Program.Orbwalker.ActiveMode.ToString().ToLower();
                 var spellSlotNameLower = spellSlot.ToString().ToLower();
 
-                if ((orbwalkerModeLower.Equals("lasthit")
+                
+                if ((orbwalkerModeLower.Equals("mixed")
+                    && (spellSlotNameLower.Equals("r"))) && (orbwalkerModeLower.Equals("lasthit")
                     && (spellSlotNameLower.Equals("e") || spellSlotNameLower.Equals("w")
                         || spellSlotNameLower.Equals("r"))) || (orbwalkerModeLower.Equals("laneclear") && (spellSlotNameLower.Equals("e") || spellSlotNameLower.Equals("w") || spellSlotNameLower.Equals("r"))))
                 {

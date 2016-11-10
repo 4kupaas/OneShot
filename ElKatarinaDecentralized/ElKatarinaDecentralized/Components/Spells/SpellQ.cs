@@ -64,11 +64,31 @@
                     return;
                 }
 
-                var target = Misc.GetTarget(this.Range, this.DamageType);
+                var target = HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget(this.Range));
                 if (target != null)
                 {
-                    this.SpellObject.CastOnUnit(target);
-                    this.lastSpellCastTime = Utils.TickCount;
+                    if (MyMenu.RootMenu.Item("combo.q.units").IsActive())
+                    {
+                        var minion =
+                            ObjectManager.Get<Obj_AI_Minion>()
+                                .Where(x => x.IsEnemy && (x.Distance(target) <= 550f))
+                                .OrderBy(x => x.Distance(target))
+                                .FirstOrDefault();
+
+                        if (minion != null)
+                        {
+                            this.SpellObject.CastOnUnit(minion);
+                            return;
+                        }
+
+                        this.SpellObject.CastOnUnit(target);
+                        this.lastSpellCastTime = Utils.TickCount;
+                    }
+                    else
+                    {
+                        this.SpellObject.CastOnUnit(target);
+                        this.lastSpellCastTime = Utils.TickCount;
+                    }
                 }
             }
             catch (Exception e)

@@ -64,6 +64,11 @@
                 {
                     nodeCombo.AddItem(new MenuItem("combo" + spellSlotNameLower + "use", "Use " + spellSlotName).SetValue(true));
 
+                    if (spellSlotNameLower.Equals("q", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        nodeCombo.AddItem(new MenuItem("combo.q.units", "Cast Q on minions").SetValue(true));
+                    }
+
                     if (spellSlotNameLower.Equals("e", StringComparison.InvariantCultureIgnoreCase))
                     {
                         nodeCombo.AddItem(new MenuItem("combo.e.tower", "E under tower").SetValue(false));

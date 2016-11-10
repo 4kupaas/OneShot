@@ -70,21 +70,30 @@
 
                     if (DaggerManager.ExistingDaggers != null)
                     {
-                        var dagger =
-                            DaggerManager.ExistingDaggers
-                                .FirstOrDefault(
-                                    d =>
-                                        d.DaggerPos.Distance(target.ServerPosition)
-                                        <= d.Object.BoundingRadius + 200 && d.Object.IsValid);
+                        var dagger = DaggerManager.ExistingDaggers;
+                        var closestDagger = dagger.FirstOrDefault(
+                                d =>
+                                    d.DaggerPos.Distance(target.ServerPosition) <= d.Object.BoundingRadius + 190
+                                    && d.Object.IsValid && d.Object.IsVisible);
 
                         if (dagger != null)
                         {
-                            //Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to dagger position.");
-                            this.SpellObject.Cast(dagger.DaggerPos);
+                            Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to dagger position.");
+                            if (closestDagger != null)
+                            {
+                                this.SpellObject.Cast(closestDagger.DaggerPos);
+
+                                if (target.Distance(closestDagger.DaggerPos) > 500f)
+                                {
+                                    this.SpellObject.Cast(target.Position);
+                                }
+                            }
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (DaggerManager.ExistingDaggers == null)
                         {
-                            //Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to target position.");
                             this.SpellObject.Cast(target.Position);
                         }
                     }
@@ -102,7 +111,35 @@
         /// </summary>
         internal override void OnMixed()
         {
-            this.OnCombo();
+            var target = Misc.GetTarget(this.Range, this.DamageType);
+            if (target != null)
+            {
+                if (MyMenu.RootMenu.Item("combo.e.tower").IsActive() && target.UnderTurret(true))
+                {
+                    return;
+                }
+
+                if (ObjectManager.Player.IsChannelingImportantSpell())
+                {
+                    return;
+                }
+
+                if (DaggerManager.ExistingDaggers != null)
+                {
+                    var dagger =
+                        DaggerManager.ExistingDaggers
+                            .FirstOrDefault(
+                                d =>
+                                    d.DaggerPos.Distance(target.ServerPosition)
+                                    <= d.Object.BoundingRadius + 200 && d.Object.IsValid);
+
+                    if (dagger != null)
+                    {
+                        Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to dagger position.");
+                        this.SpellObject.Cast(dagger.DaggerPos);
+                    }
+                }
+            }
         }
 
         /// <summary>
