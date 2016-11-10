@@ -64,7 +64,7 @@
                     return;
                 }
 
-                var target = HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget(this.Range));
+                var target = HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget(this.Range) && !x.IsDead && !x.IsZombie);
                 if (target != null)
                 {
                     if (MyMenu.RootMenu.Item("combo.q.units").IsActive())
@@ -78,7 +78,7 @@
                         if (minion != null)
                         {
                             this.SpellObject.CastOnUnit(minion);
-                            return;
+                           // return;
                         }
 
                         this.SpellObject.CastOnUnit(target);
