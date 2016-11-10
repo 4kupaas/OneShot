@@ -78,7 +78,7 @@
                         if (minion != null)
                         {
                             this.SpellObject.CastOnUnit(minion);
-                           // return;
+                            return;
                         }
 
                         this.SpellObject.CastOnUnit(target);
