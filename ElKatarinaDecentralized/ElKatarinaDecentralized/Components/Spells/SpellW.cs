@@ -26,7 +26,7 @@
         /// <summary>
         ///     Gets the range.
         /// </summary>
-        internal override float Range => Misc.KatarinaAutoAttackRange + 250f;
+        internal override float Range => Misc.KatarinaAutoAttackRange;
 
         /// <summary>
         ///     Gets the spell slot.
@@ -62,7 +62,7 @@
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@SpellE.cs: Can not run OnCombo - {0}", e);
+                Logging.AddEntry(LoggingEntryTrype.Error, "@SpellW.cs: Can not run OnCombo - {0}", e);
                 throw;
             }
         }
