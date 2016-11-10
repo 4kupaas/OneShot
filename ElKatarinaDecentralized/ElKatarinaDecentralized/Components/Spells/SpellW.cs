@@ -26,13 +26,12 @@
         /// <summary>
         ///     Gets the range.
         /// </summary>
-        internal override float Range => Misc.KatarinaAutoAttackRange + 150f;
+        internal override float Range => Misc.KatarinaAutoAttackRange + 250f;
 
         /// <summary>
         ///     Gets the spell slot.
         /// </summary>
         internal override SpellSlot SpellSlot => SpellSlot.W;
-
 
         #endregion
 

@@ -79,14 +79,21 @@
 
                         if (dagger != null)
                         {
+                            Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to dagger position.");
                             this.SpellObject.Cast(dagger.DaggerPos);
-                            return;
                         }
+                        else
+                        {
+                            Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to target position.");
+                            this.SpellObject.Cast(target.Position);
+                        }
+
+                        return;
                     }
 
-                    if (!Misc.SpellQ.SpellSlot.IsReady() && Misc.SpellQ.SpellObject.LastCastedDelay(2200))
+                    if (!Misc.SpellQ.SpellSlot.IsReady())
                     {
-                        this.SpellObject.Cast(target);
+                        //this.SpellObject.Cast(target.Position);
                     }
                 }
             }
