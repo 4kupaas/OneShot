@@ -92,7 +92,7 @@
                     var nodeMixed = new Menu("Mixed", spellSlotNameLower + "mixedmenu");
                     {
                         nodeMixed.AddItem(
-                            new MenuItem("mixed" + spellSlotNameLower + "use", "Use " + spellSlotName).SetValue(true));
+                            new MenuItem("mixed" + spellSlotNameLower + "use", "Use " + spellSlotName).SetValue(false));
                     }
 
                     node.AddSubMenu(nodeMixed);
