@@ -71,7 +71,7 @@
                     if (DaggerManager.ExistingDaggers != null)
                     {
                         var dagger =
-                            DaggerManager.ExistingDaggers.OrderBy(d => d.ExpireTime)
+                            DaggerManager.ExistingDaggers
                                 .FirstOrDefault(
                                     d =>
                                         d.DaggerPos.Distance(target.ServerPosition)
@@ -87,13 +87,6 @@
                             Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to target position.");
                             this.SpellObject.Cast(target.Position);
                         }
-
-                        return;
-                    }
-
-                    if (!Misc.SpellQ.SpellSlot.IsReady())
-                    {
-                        //this.SpellObject.Cast(target.Position);
                     }
                 }
             }
