@@ -110,7 +110,7 @@
                        300, () =>
                        {
                            CancellingUlt = false;
-                           if (ObjectManager.Player.CountEnemiesInRange(this.Range) == 0)
+                           if (ObjectManager.Player.CountEnemiesInRange(550f) == 0) // use max range
                            {
                                ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition.Randomize(10, 20), false);
                                Logging.AddEntry(LoggingEntryTrype.Debug, "Cancel R");

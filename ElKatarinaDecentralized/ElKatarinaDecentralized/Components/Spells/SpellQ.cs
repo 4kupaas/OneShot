@@ -38,11 +38,6 @@
         /// </summary>
         internal override SpellSlot SpellSlot => SpellSlot.Q;
 
-        /// <summary>
-        ///     The last spell casting.
-        /// </summary>
-        internal int lastSpellCastTime;
-
         #endregion
 
         #region Methods
@@ -68,7 +63,6 @@
                 if (target != null)
                 {
                     this.SpellObject.CastOnUnit(target);
-                    this.lastSpellCastTime = Environment.TickCount;
                 }
             }
             catch (Exception e)
