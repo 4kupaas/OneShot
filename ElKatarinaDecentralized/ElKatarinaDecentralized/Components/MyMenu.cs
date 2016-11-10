@@ -72,6 +72,8 @@
                     if (spellSlotNameLower.Equals("e", StringComparison.InvariantCultureIgnoreCase))
                     {
                         nodeCombo.AddItem(new MenuItem("combo.e.tower", "E under tower").SetValue(false));
+                        nodeCombo.AddItem(new MenuItem("combo.e.daggers", "Cast E on daggers only").SetValue(true))
+                            .SetTooltip("When disabled E will cast on daggers and on champions. Daggers prioritized. ");
                     }
 
                     if (spellSlotNameLower.Equals("r", StringComparison.InvariantCultureIgnoreCase))

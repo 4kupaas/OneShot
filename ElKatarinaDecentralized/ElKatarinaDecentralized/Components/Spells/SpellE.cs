@@ -83,9 +83,12 @@
                             {
                                 this.SpellObject.Cast(closestDagger.DaggerPos);
 
-                                if (target.Distance(closestDagger.DaggerPos) > 500f)
+                                if (!MyMenu.RootMenu.Item("combo.e.daggers").IsActive())
                                 {
-                                    this.SpellObject.Cast(target.Position);
+                                    if (target.Distance(closestDagger.DaggerPos) > 500f)
+                                    {
+                                        this.SpellObject.Cast(target.Position);
+                                    }
                                 }
                             }
                         }
@@ -94,7 +97,10 @@
                     {
                         if (DaggerManager.ExistingDaggers == null)
                         {
-                            this.SpellObject.Cast(target.Position);
+                            if (!MyMenu.RootMenu.Item("combo.e.daggers").IsActive())
+                            {
+                                this.SpellObject.Cast(target.Position);
+                            }
                         }
                     }
                 }
