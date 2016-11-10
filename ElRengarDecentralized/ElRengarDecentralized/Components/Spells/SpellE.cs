@@ -216,7 +216,7 @@
 
             if (minion != null)
             {
-                this.SpellObject.Cast(minion);
+                this.SpellObject.Cast(minion.Position);
             }
         }
 
