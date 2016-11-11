@@ -54,6 +54,7 @@
                 throw;
             }
 
+            Drawing.OnDraw += OnDraw;
             Game.OnUpdate += this.Game_OnUpdate;
             GameObject.OnCreate += DaggerManager.OnCreate;
             GameObject.OnDelete += DaggerManager.OnDelete;
@@ -65,6 +66,45 @@
 
         #region Methods
 
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="args"></param>
+        public void OnDraw(EventArgs args)
+        {
+           if (MyMenu.RootMenu.Item("draww").GetValue<Circle>().Active)
+           {
+               var daggers = DaggerManager.ExistingDaggers.Where(d => d.Object.IsValid && ObjectManager.Player.Distance(d.DaggerPos) < Misc.SpellE.Range);
+               foreach (var dagger in daggers)
+               {
+                   Render.Circle.DrawCircle(dagger.DaggerPos, dagger.Object.BoundingRadius, Color.OrangeRed);
+               }
+           }
+
+           if (MyMenu.RootMenu.Item("drawq").GetValue<Circle>().Active)
+            {
+                if (Misc.SpellQ.SpellObject.Level > 0)
+                {
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, Misc.SpellQ.Range, MyMenu.RootMenu.Item("drawq").GetValue<Circle>().Color);
+                }
+            }
+
+            if (MyMenu.RootMenu.Item("drawe").GetValue<Circle>().Active)
+            {
+                if (Misc.SpellE.SpellObject.Level > 0)
+                {
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, Misc.SpellE.Range, MyMenu.RootMenu.Item("drawe").GetValue<Circle>().Color);
+                }
+            }
+
+            if (MyMenu.RootMenu.Item("drawr").GetValue<Circle>().Active)
+            {
+                if (Misc.SpellR.SpellObject.Level > 0)
+                {
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, Misc.SpellR.Range, MyMenu.RootMenu.Item("drawr").GetValue<Circle>().Color);
+                }
+            }
+        }
 
         /// <summary>
         ///     
@@ -81,7 +121,6 @@
             if (args.Slot.Equals(SpellSlot.R) && MyMenu.RootMenu.Item("combo.disable.evade").IsActive())
             {
                 EvadeDisabler.DisableEvade(3500);
-                Logging.AddEntry(LoggingEntryTrype.Debug, "@Spellmanager.CS: Disable Evade");
             }
         }
 
@@ -99,7 +138,7 @@
         }
 
         /// <summary>
-        /// 
+        ///     The kill steal handler.
         /// </summary>
         public static void KillstealHandler()
         {
@@ -203,7 +242,7 @@
 
                 
                 if ((orbwalkerModeLower.Equals("mixed")
-                    && (spellSlotNameLower.Equals("r"))) && (orbwalkerModeLower.Equals("lasthit")
+                    && (spellSlotNameLower.Equals("r"))) || (orbwalkerModeLower.Equals("lasthit")
                     && (spellSlotNameLower.Equals("e") || spellSlotNameLower.Equals("w")
                         || spellSlotNameLower.Equals("r"))) || (orbwalkerModeLower.Equals("laneclear") && (spellSlotNameLower.Equals("e") || spellSlotNameLower.Equals("w") || spellSlotNameLower.Equals("r"))))
                 {

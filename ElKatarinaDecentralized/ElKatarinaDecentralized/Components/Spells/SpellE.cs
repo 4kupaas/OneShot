@@ -73,21 +73,22 @@
                         var dagger = DaggerManager.ExistingDaggers;
                         var closestDagger = dagger.FirstOrDefault(
                                 d =>
-                                    d.DaggerPos.Distance(target.ServerPosition) <= d.Object.BoundingRadius + 190
+                                    d.DaggerPos.Distance(target.ServerPosition) <= d.Object.BoundingRadius + 200
                                     && d.Object.IsValid && d.Object.IsVisible);
 
                         if (dagger != null)
                         {
-                            Logging.AddEntry(LoggingEntryTrype.Debug, "Dash to dagger position.");
-                            if (closestDagger != null)
+                            if (closestDagger != null && Utils.TickCount - this.SpellObject.LastCastAttemptT > 0)
                             {
                                 this.SpellObject.Cast(closestDagger.DaggerPos);
+                                this.SpellObject.LastCastAttemptT = Utils.TickCount;
 
                                 if (!MyMenu.RootMenu.Item("combo.e.daggers").IsActive())
                                 {
                                     if (target.Distance(closestDagger.DaggerPos) > 500f)
                                     {
                                         this.SpellObject.Cast(target.Position);
+                                        this.SpellObject.LastCastAttemptT = Utils.TickCount;
                                     }
                                 }
                             }
@@ -100,6 +101,7 @@
                             if (!MyMenu.RootMenu.Item("combo.e.daggers").IsActive())
                             {
                                 this.SpellObject.Cast(target.Position);
+                                this.SpellObject.LastCastAttemptT = Utils.TickCount;
                             }
                         }
                     }

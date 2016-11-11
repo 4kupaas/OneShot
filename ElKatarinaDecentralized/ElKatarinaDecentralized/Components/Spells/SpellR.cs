@@ -110,10 +110,9 @@
                        300, () =>
                        {
                            CancellingUlt = false;
-                           if (ObjectManager.Player.CountEnemiesInRange(550f) == 0) // use max range
+                           if (ObjectManager.Player.CountEnemiesInRange(550f) == 0)
                            {
                                ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition.Randomize(10, 20), false);
-                               Logging.AddEntry(LoggingEntryTrype.Debug, "Cancel R");
                            }
                        });
                 }
@@ -127,7 +126,6 @@
             if (MyMenu.RootMenu.Item("combo.disable.evade").IsActive() && EvadeDisabler.EvadeDisabled)
             {
                 EvadeDisabler.EnableEvade();
-                Logging.AddEntry(LoggingEntryTrype.Debug, "@SpellR.CS: Enable Evade");
             }
         }
 

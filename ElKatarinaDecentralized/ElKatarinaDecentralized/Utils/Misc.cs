@@ -70,18 +70,6 @@
         }
 
         /// <summary>
-        ///     
-        /// </summary>
-        /// <param name="spell"></param>
-        /// <param name="delay"></param>
-        /// <returns></returns>
-        public static bool LastCastedDelay(this Spell spell, int delay)
-        {
-            var casted = ObjectManager.Player.LastCastedspell();
-            return casted != null && casted.Name == spell.Instance.Name && Utils.TickCount - casted.Tick < delay;
-        }
-
-        /// <summary>
         ///     Gets a target from the common target selector.
         /// </summary>
         /// <param name="range">

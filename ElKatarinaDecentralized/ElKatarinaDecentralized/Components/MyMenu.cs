@@ -71,7 +71,7 @@
 
                     if (spellSlotNameLower.Equals("e", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        nodeCombo.AddItem(new MenuItem("combo.e.tower", "E under tower").SetValue(false));
+                        nodeCombo.AddItem(new MenuItem("combo.e.tower", "Block E under tower").SetValue(false));
                         nodeCombo.AddItem(new MenuItem("combo.e.daggers", "Cast E on daggers only").SetValue(true))
                             .SetTooltip("When disabled E will cast on daggers and on champions. Daggers prioritized. ");
                     }
@@ -126,6 +126,15 @@
                     node.AddSubMenu(nodeLaneClear);
                 }
 
+                var nodeDrawings = new Menu("Drawings", spellSlotNameLower + "drawingsmenu");
+                {
+                    nodeDrawings.AddItem(
+                        new MenuItem("draw" + spellSlotNameLower, "Draw " + spellSlotName).SetValue(
+                            new Circle()));
+                }
+
+                node.AddSubMenu(nodeDrawings);
+
                 RootMenu.AddSubMenu(node);
             }
             catch (Exception e)
@@ -149,26 +158,25 @@
             return node;
         }
 
-
-    /// <summary>
-    ///     The get items node.
-    /// </summary>
-    private static Menu GetFleeNode()
-    {
-        var node = new Menu("Flee", "Flee").SetFontStyle(FontStyle.Bold, Color.BlueViolet);
+        /// <summary>
+        ///     The get items node.
+        /// </summary>
+        private static Menu GetFleeNode()
         {
-            node.AddItem(
-                    new MenuItem("wardjump.key", "Flee key").SetValue(new KeyBind("Z".ToCharArray()[0], KeyBindType.Press)))
-                .SetTooltip("Jump to minions and allies");
+            var node = new Menu("Flee", "Flee").SetFontStyle(FontStyle.Bold, Color.BlueViolet);
+            {
+                node.AddItem(
+                        new MenuItem("wardjump.key", "Flee key").SetValue(new KeyBind("Z".ToCharArray()[0], KeyBindType.Press)))
+                    .SetTooltip("Jump to minions and allies");
+            }
+
+            return node;
         }
 
-        return node;
-    }
-
-    /// <summary>
-    ///     The get items node.
-    /// </summary>
-    private static Menu GetKillstealNode()
+        /// <summary>
+        ///     The get items node.
+        /// </summary>
+        private static Menu GetKillstealNode()
         {
             var node = new Menu("Killsteal", "Killsteal").SetFontStyle(FontStyle.Bold, Color.Pink);
             {

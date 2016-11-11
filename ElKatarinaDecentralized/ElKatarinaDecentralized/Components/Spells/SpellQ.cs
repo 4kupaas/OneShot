@@ -11,6 +11,8 @@
 
     using SharpDX;
 
+    using Color = System.Drawing.Color;
+
     /// <summary>
     ///     The spell Q.
     /// </summary>
@@ -38,11 +40,6 @@
         /// </summary>
         internal override SpellSlot SpellSlot => SpellSlot.Q;
 
-        /// <summary>
-        ///     The last spell casting.
-        /// </summary>
-        internal int lastSpellCastTime;
-
         #endregion
 
         #region Methods
@@ -64,30 +61,49 @@
                     return;
                 }
 
-                var target = HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget(this.Range) && !x.IsDead && !x.IsZombie);
+                var target =
+                    HeroManager.Enemies.Where(x => x.IsValidTarget(this.Range) && !x.IsDead && !x.IsZombie)
+                        .OrderBy(x => x.Health)
+                        .FirstOrDefault();
+
                 if (target != null)
                 {
                     if (MyMenu.RootMenu.Item("combo.q.units").IsActive())
                     {
-                        var minion =
-                            ObjectManager.Get<Obj_AI_Minion>()
-                                .Where(x => x.IsEnemy && (x.Distance(target) <= 550f))
-                                .OrderBy(x => x.Distance(target))
-                                .FirstOrDefault();
+                        var minions = MinionManager.GetMinions(1000f);
+                        var countCloseToTarget = minions.Count(m => m.Distance(target) <= 570f);
 
-                        if (minion != null)
+                        if (target.Distance(ObjectManager.Player) < 450f)
                         {
-                            this.SpellObject.CastOnUnit(minion);
-                            return;
+                            this.SpellObject.CastOnUnit(target);
                         }
 
-                        this.SpellObject.CastOnUnit(target);
-                        this.lastSpellCastTime = Utils.TickCount;
+                        if (countCloseToTarget >= 3)
+                        {
+                            var bestMinion =
+                                MinionManager.GetMinions(target.ServerPosition, 550f)
+                                    .OrderBy(x => x.Distance(target))
+                                    .FirstOrDefault();
+
+                            if (bestMinion != null)
+                            {
+                                this.SpellObject.CastOnUnit(bestMinion);
+                            }
+                        }
+
+                        if (countCloseToTarget < 3)
+                        {
+                            this.SpellObject.CastOnUnit(target);
+                        }
+
+                        if (target.CountEnemiesInRange(600f) >= 2)
+                        {
+                            this.SpellObject.CastOnUnit(target);
+                        }
                     }
                     else
                     {
                         this.SpellObject.CastOnUnit(target);
-                        this.lastSpellCastTime = Utils.TickCount;
                     }
                 }
             }
@@ -105,7 +121,6 @@
         {
             this.OnCombo();
         }
-
 
         /// <summary>
         ///     The on last hit callback.
