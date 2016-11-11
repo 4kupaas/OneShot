@@ -82,7 +82,7 @@
             }
             catch (Exception e)
             {
-                Logging.AddEntry(LoggingEntryTrype.Error, "@SpellR.cs: Can not run OnCombo - {0}", e);
+                Logging.AddEntry(LoggingEntryType.Error, "@SpellR.cs: Can not run OnCombo - {0}", e);
                 throw;
             }
         }
