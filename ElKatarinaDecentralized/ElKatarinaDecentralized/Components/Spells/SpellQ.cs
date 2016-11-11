@@ -70,7 +70,7 @@
                 {
                     if (MyMenu.RootMenu.Item("combo.q.units").IsActive())
                     {
-                        var minions = MinionManager.GetMinions(1000f);
+                        var minions = MinionManager.GetMinions(850f);
                         var countCloseToTarget = minions.Count(m => m.Distance(target) <= 570f);
 
                         if (target.Distance(ObjectManager.Player) < 450f)
