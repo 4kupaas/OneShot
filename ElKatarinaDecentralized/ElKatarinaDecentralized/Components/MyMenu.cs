@@ -130,7 +130,7 @@
                 {
                     nodeDrawings.AddItem(
                         new MenuItem("draw" + spellSlotNameLower, "Draw " + spellSlotName).SetValue(
-                            new Circle()));
+                            new Circle(true, System.Drawing.Color.DeepSkyBlue)));
                 }
 
                 node.AddSubMenu(nodeDrawings);
