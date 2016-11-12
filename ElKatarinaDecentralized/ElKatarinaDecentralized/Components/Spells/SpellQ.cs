@@ -124,11 +124,7 @@
         /// </summary>
         internal override void OnMixed()
         {
-            var target =
-                    HeroManager.Enemies.Where(x => x.IsValidTarget(this.Range) && !x.IsDead && !x.IsZombie)
-                        .OrderBy(x => x.Health)
-                        .FirstOrDefault();
-
+            var target = Misc.GetTarget(this.Range, this.DamageType);
             if (target != null)
             {
                 this.SpellObject.CastOnUnit(target);
