@@ -3,6 +3,7 @@
     using System;
     using System.Drawing;
 
+    using ElKatarinaDecentralized.Damages;
     using ElKatarinaDecentralized.Enumerations;
     using ElKatarinaDecentralized.Utils;
 
@@ -178,7 +179,7 @@
         /// </summary>
         private static Menu GetKillstealNode()
         {
-            var node = new Menu("Killsteal", "Killsteal").SetFontStyle(FontStyle.Bold, Color.Pink);
+            var node = new Menu("Misc / Killsteal", "Killsteal").SetFontStyle(FontStyle.Bold, Color.Pink);
             {
                 node.AddItem(new MenuItem("ks.activated", "Enable killsteal").SetValue(true));
                 node.AddItem(new MenuItem("ks.tower", "Killsteal under tower").SetValue(false));
@@ -188,6 +189,31 @@
                 node.AddItem(new MenuItem("ks.r.ticks", "R ticks").SetValue(new Slider(7, 1, 15)));
                 node.AddItem(new MenuItem("ks.r.cancel.r", "Cancel R to KS").SetValue(false));
                 node.AddItem(new MenuItem("ks.rhp", "Min Health").SetValue(new Slider(10)));
+
+                var dmgAfterE = new MenuItem("misc.drawcombodamage", "Draw combo damage").SetValue(true);
+                var drawFill =
+                    new MenuItem("misc.drawcolour", "Fill colour", true).SetValue(
+                        new Circle(true, System.Drawing.Color.FromArgb(204, 255, 0, 1)));
+
+                node.SubMenu("Combo drawings").AddItem(drawFill);
+                node.SubMenu("Combo drawings").AddItem(dmgAfterE);
+
+                DrawDamage.DamageToUnit = RealDamages.GetTotalDamage;
+                DrawDamage.Enabled = dmgAfterE.GetValue<bool>();
+                DrawDamage.Fill = drawFill.GetValue<Circle>().Active;
+                DrawDamage.FillColor = drawFill.GetValue<Circle>().Color;
+
+                dmgAfterE.ValueChanged +=
+                    delegate (object sender, OnValueChangeEventArgs eventArgs)
+                    {
+                        DrawDamage.Enabled = eventArgs.GetNewValue<bool>();
+                    };
+
+                drawFill.ValueChanged += delegate (object sender, OnValueChangeEventArgs eventArgs)
+                {
+                    DrawDamage.Fill = eventArgs.GetNewValue<Circle>().Active;
+                    DrawDamage.FillColor = eventArgs.GetNewValue<Circle>().Color;
+                };
             }
 
             return node;

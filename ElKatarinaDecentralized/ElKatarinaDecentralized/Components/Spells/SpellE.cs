@@ -92,16 +92,15 @@
                                     }
                                 }
                             }
-                        }
-                    }
-                    else
-                    {
-                        if (DaggerManager.ExistingDaggers == null)
-                        {
-                            if (!MyMenu.RootMenu.Item("combo.e.daggers").IsActive())
+
+                            if (closestDagger == null)
                             {
-                                this.SpellObject.Cast(target.Position);
-                                this.SpellObject.LastCastAttemptT = Utils.TickCount;
+                                if (!MyMenu.RootMenu.Item("combo.e.daggers").IsActive() && Utils.TickCount - this.SpellObject.LastCastAttemptT > 500 
+                                    && Utils.TickCount - Misc.SpellQ.SpellObject.LastCastAttemptT > 750)
+                                {
+                                    this.SpellObject.Cast(target.Position);
+                                    this.SpellObject.LastCastAttemptT = Utils.TickCount;
+                                }
                             }
                         }
                     }

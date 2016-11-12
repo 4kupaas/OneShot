@@ -5,6 +5,7 @@
     using System.Linq;
 
     using ElKatarinaDecentralized.Components.Spells;
+    using ElKatarinaDecentralized.Damages;
     using ElKatarinaDecentralized.Enumerations;
     using ElKatarinaDecentralized.Utils;
 
@@ -177,15 +178,16 @@
 
                 if (Misc.SpellE.SpellObject.IsInRange(enemy))
                 {
-                    if (Misc.SpellQ.SpellObject.IsCastable(enemy, true) && Misc.SpellQ.SpellSlot.IsReady() && MyMenu.RootMenu.Item("ks.q").IsActive() && enemy.IsValidTarget(Misc.SpellQ.Range))
+                    if (RealDamages.GetRealDamage(Misc.SpellQ.SpellSlot, enemy) > enemy.Health && Misc.SpellQ.SpellObject.CanCast(enemy) && Misc.SpellQ.SpellSlot.IsReady() && MyMenu.RootMenu.Item("ks.q").IsActive() && enemy.IsValidTarget(Misc.SpellQ.Range))
                     {
                         Misc.SpellQ.SpellObject.CastOnUnit(enemy);
                         KSTarget = enemy;
                     }
 
-                    if (Misc.SpellE.SpellObject.IsCastable(enemy, true) && MyMenu.RootMenu.Item("ks.e").IsActive() && Misc.SpellE.SpellSlot.IsReady() && enemy.IsValidTarget(Misc.SpellE.Range))
+                    if (RealDamages.GetRealDamage(Misc.SpellE.SpellSlot, enemy) > enemy.Health && Misc.SpellE.SpellObject.CanCast(enemy) 
+                        && MyMenu.RootMenu.Item("ks.e").IsActive() && Misc.SpellE.SpellSlot.IsReady() && enemy.IsValidTarget(Misc.SpellE.Range))
                     {
-                        Misc.SpellE.SpellObject.Cast(enemy);
+                        Misc.SpellE.SpellObject.CastOnUnit(enemy);
                         KSTarget = enemy;
                     }
 
@@ -193,10 +195,10 @@
                     {
                         if (Misc.SpellE.SpellSlot.IsReady() && Misc.SpellQ.SpellSlot.IsReady())
                         {
-                            if (Misc.SpellQ.SpellObject.GetDamage(enemy) + Misc.SpellE.SpellObject.GetDamage(enemy)
+                            if (RealDamages.GetRealDamage(Misc.SpellQ.SpellSlot, enemy) + RealDamages.GetRealDamage(Misc.SpellE.SpellSlot, enemy)
                                 > enemy.Health && enemy.IsValidTarget(Misc.SpellQ.Range))
                             {
-                                Misc.SpellE.SpellObject.Cast(enemy);
+                                Misc.SpellE.SpellObject.CastOnUnit(enemy);
                                 KSTarget = enemy;
                             }
                         }
@@ -205,8 +207,8 @@
                     if (!Misc.SpellQ.SpellObject.IsCastable(enemy, true)
                         || !Misc.SpellE.SpellObject.IsCastable(enemy, true))
                     {
-                        if (enemy.GetCalculatedRDamage(MyMenu.RootMenu.Item("ks.r.ticks").GetValue<Slider>().Value) > enemy.Health && MyMenu.RootMenu.Item("ks.r").IsActive()
-                       && Misc.SpellR.SpellSlot.IsReady() && enemy.IsValidTarget(Misc.SpellR.Range))
+                        if((RealDamages.GetRealDamage(Misc.SpellR.SpellSlot, enemy) * MyMenu.RootMenu.Item("ks.r.ticks").GetValue<Slider>().Value) > enemy.Health 
+                            && MyMenu.RootMenu.Item("ks.r").IsActive() && Misc.SpellR.SpellSlot.IsReady() && enemy.IsValidTarget(Misc.SpellR.Range))
                         {
                             Misc.SpellR.SpellObject.CastOnUnit(enemy);
                             KSTarget = enemy;

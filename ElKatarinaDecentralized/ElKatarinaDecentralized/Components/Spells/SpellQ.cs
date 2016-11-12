@@ -61,6 +61,7 @@
                     return;
                 }
 
+
                 var target =
                     HeroManager.Enemies.Where(x => x.IsValidTarget(this.Range) && !x.IsDead && !x.IsZombie)
                         .OrderBy(x => x.Health)
@@ -76,6 +77,7 @@
                         if (target.Distance(ObjectManager.Player) < 450f)
                         {
                             this.SpellObject.CastOnUnit(target);
+                            this.SpellObject.LastCastAttemptT = Utils.TickCount;
                         }
 
                         if (countCloseToTarget >= 3)
@@ -88,6 +90,7 @@
                             if (bestMinion != null)
                             {
                                 this.SpellObject.CastOnUnit(bestMinion);
+                                this.SpellObject.LastCastAttemptT = Utils.TickCount;
                             }
                         }
 
@@ -99,11 +102,13 @@
                         if (target.CountEnemiesInRange(600f) >= 2)
                         {
                             this.SpellObject.CastOnUnit(target);
+                            this.SpellObject.LastCastAttemptT = Utils.TickCount;
                         }
                     }
                     else
                     {
                         this.SpellObject.CastOnUnit(target);
+                        this.SpellObject.LastCastAttemptT = Utils.TickCount;
                     }
                 }
             }
