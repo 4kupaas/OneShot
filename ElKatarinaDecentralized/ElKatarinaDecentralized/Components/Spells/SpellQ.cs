@@ -132,6 +132,7 @@
             if (target != null)
             {
                 this.SpellObject.CastOnUnit(target);
+                this.SpellObject.LastCastAttemptT = Utils.TickCount;
             }
         }
 
