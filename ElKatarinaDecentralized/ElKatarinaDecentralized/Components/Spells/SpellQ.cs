@@ -74,7 +74,7 @@
                         var minions = MinionManager.GetMinions(850f);
                         var countCloseToTarget = minions.Count(m => m.Distance(target) <= 570f);
 
-                        if (target.Distance(ObjectManager.Player) < 450f)
+                        if (target.Distance(ObjectManager.Player) < 750f)
                         {
                             this.SpellObject.CastOnUnit(target);
                             this.SpellObject.LastCastAttemptT = Utils.TickCount;
