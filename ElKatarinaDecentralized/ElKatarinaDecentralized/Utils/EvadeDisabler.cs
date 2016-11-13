@@ -24,7 +24,7 @@
 
         private static Menu EzEvadeMenu
         {
-            get { return Menu.GetMenu("ezEvade", "ezEvade"); }
+            get { return Menu.GetMenu("EzEvade", "ezEvade"); }
         }
 
         public static Menu EvadeMenu
