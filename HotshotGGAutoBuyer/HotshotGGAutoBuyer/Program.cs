@@ -19,17 +19,12 @@ namespace HotshotGGAutoBuyer
 
         private static void OnLoad(EventArgs args)
         {
-
             Game.OnUpdate += OnUpdate;
         }
 
         private static void OnUpdate(EventArgs args)
         {
-            if (ItemData.Corrupting_Potion.GetItem().IsOwned())
-            {
-                return;
-            }
-
+            Game.Say("Trying to buy...");
             ObjectManager.Player.BuyItem((ItemId)2033);
         }
     }
