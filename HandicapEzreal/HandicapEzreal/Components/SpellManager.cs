@@ -35,6 +35,9 @@
             try
             {
                 this.LoadSpells(new List<ISpell>() { new SpellQ(), new SpellW(), new SpellR() });
+                Misc.SpellQ = new SpellQ();
+                Misc.SpellW = new SpellW();
+                Misc.SpellR = new SpellR();
             }
             catch (Exception e)
             {

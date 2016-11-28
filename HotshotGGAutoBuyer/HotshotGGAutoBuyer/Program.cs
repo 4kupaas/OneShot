@@ -24,8 +24,11 @@ namespace HotshotGGAutoBuyer
 
         private static void OnUpdate(EventArgs args)
         {
-            Game.Say("Trying to buy...");
-            ObjectManager.Player.BuyItem((ItemId)2033);
+            if (ObjectManager.Player.InFountain())
+            {
+                Game.Say("Trying to buy...");
+                ObjectManager.Player.BuyItem((ItemId)2138);
+            }
         }
     }
 }

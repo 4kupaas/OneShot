@@ -43,6 +43,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,6 +58,8 @@
     <Compile Include="Components\Spells\SpellR.cs" />
     <Compile Include="Components\Spells\SpellQ.cs" />
     <Compile Include="Components\Spells\SpellW.cs" />
+    <Compile Include="Damages\DrawDamage.cs" />
+    <Compile Include="Damages\RealDamages.cs" />
     <Compile Include="Enumerations\LoggingEntryType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

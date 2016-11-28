@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
 
+    using HandicapEzreal.Components.Spells;
     using HandicapEzreal.Enumerations;
 
     using LeagueSharp;
@@ -16,21 +17,26 @@
         #region Methods
 
         /// <summary>
-        ///     Gets the target W stacks
+        ///     Spell Q
         /// </summary>
-        /// <param name="target"></param>
-        /// <returns></returns>
-        internal static int GetWStacks(Obj_AI_Base target)
+        public static SpellQ SpellQ;
+
+        /// <summary>
+        ///     Spell W
+        /// </summary>
+        public static SpellW SpellW;
+
+        /// <summary>
+        ///     Spell R
+        /// </summary>
+        public static SpellR SpellR;
+
+        /// <summary>
+        ///     Gets the auto attack range.
+        /// </summary>
+        internal static float EzrealAutoAttackRange
         {
-            try
-            {
-                return target.GetBuffCount("varuswdebuff");
-            }
-            catch (Exception e)
-            {
-                Logging.AddEntry(LoggingEntryType.Error, "@Misc.cs: Can not return target - {0}", e);
-                throw;
-            }
+            get { return Orbwalking.GetRealAutoAttackRange(ObjectManager.Player); }
         }
 
         /// <summary>

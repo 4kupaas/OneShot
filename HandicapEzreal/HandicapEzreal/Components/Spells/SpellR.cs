@@ -64,16 +64,12 @@
         {
             try
             {
-                if (this.SpellObject == null)
-                {
-                    return;
-                }
-
                 var target = Misc.GetTarget(this.Range, this.DamageType);
                 if (target != null)
                 {
                     var potentialTarget =
-                        HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget(this.Range) && !x.IsDead && !x.IsZombie && this.SpellObject.GetDamage(x) > x.Health);
+                        HeroManager.Enemies.FirstOrDefault(x => x.IsValidTarget(this.Range) 
+                        && !x.IsDead && !x.IsZombie && this.SpellObject.GetDamage(x) > x.Health);
 
                     if (potentialTarget?.CountAlliesInRange(850) == 0 && ObjectManager.Player.Distance(target) > 900)
                     {
