@@ -174,7 +174,7 @@
                 ObjectManager.Player.ServerPosition,
                 BuffManager.HasPassive ? 600f : this.Range,
                 MinionTypes.All,
-                MinionTeam.All,
+                MinionTeam.Neutral,
                 MinionOrderTypes.MaxHealth);
 
             foreach (var minion in minions.OrderByDescending(x => x.MaxHealth))
