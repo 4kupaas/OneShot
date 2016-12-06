@@ -170,22 +170,27 @@
         /// </summary>
         internal override void OnJungleClear()
         {
-            var minion =
-                MinionManager.GetMinions(ObjectManager.Player.ServerPosition, BuffManager.HasPassive ? 600f : this.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth)
-                .MinOrDefault(obj => obj.MaxHealth);
+            var minions = MinionManager.GetMinions(
+                ObjectManager.Player.ServerPosition,
+                BuffManager.HasPassive ? 600f : this.Range,
+                MinionTypes.All,
+                MinionTeam.All,
+                MinionOrderTypes.MaxHealth);
 
-            if (minion != null)
+            foreach (var minion in minions.OrderByDescending(x => x.MaxHealth))
             {
-                if (BuffManager.HasPassive)
+                if (minion != null)
                 {
-                    if (minion.Distance(ObjectManager.Player) > this.Range)
+                    if (BuffManager.HasPassive)
                     {
-                        Logging.AddEntry(LoggingEntryType.Debug, "@SpellQ.cs: Range too big.");
-                        return;
+                        if (minion.Distance(ObjectManager.Player) > this.Range)
+                        {
+                            return;
+                        }
                     }
-                }
 
-                this.SpellObject.Cast(minion);
+                    this.SpellObject.Cast(minion);
+                }
             }
         }
 
