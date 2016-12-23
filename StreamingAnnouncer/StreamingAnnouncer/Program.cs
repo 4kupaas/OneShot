@@ -118,7 +118,8 @@
                 || args.EventId == GameEventId.OnKillDragonSteal
                 || args.EventId == GameEventId.OnReconnect
                 || args.EventId == GameEventId.OnQuit
-                || args.EventId == GameEventId.OnShutdown)
+                || args.EventId == GameEventId.OnShutdown
+                || args.EventId == GameEventId.OnLeave)
             {
                 HideAnnouncer = true;
                 lastAnnouncer = Environment.TickCount;
