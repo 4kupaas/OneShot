@@ -1,7 +1,9 @@
 ﻿namespace StreamingAnnouncer
 {
     using System;
+    using System.Collections.Generic;
     using System.Drawing;
+    using System.IO;
 
     using LeagueSharp;
     using LeagueSharp.Common;
@@ -59,8 +61,68 @@
             MenuInitializer();
             Game.OnNotify += OnNotify;
             Drawing.OnDraw += Drawing_OnEndScene;
+            Game.OnProcessPacket += Game_OnGameProcessPacket;
         }
 
+        /// <summary>
+        ///     On packet process.
+        /// </summary>
+        /// <param name="args"></param>
+        private static void Game_OnGameProcessPacket(GamePacketEventArgs args)
+        {
+            Disconnect(args);
+            Reconnect(args);
+        }
+
+        /// <summary>
+        ///     Disconnect packet process.
+        /// </summary>
+        /// <param name="args"></param>
+        private static void Disconnect(GamePacketEventArgs args)
+        {
+            var reader = new BinaryReader(new MemoryStream(args.PacketData));
+            byte packetId = reader.ReadByte();
+            int packet = -1;
+
+            if (Game.Version.Contains("6.24"))
+            {
+                packet = 13;
+            }
+
+            if (packetId != packet || args.PacketData.Length != 12)
+            {
+                return;
+            }
+
+            HideAnnouncer = true;
+            lastAnnouncer = Environment.TickCount;
+            Console.WriteLine("[Streaming {0:HH:mm:ss}] Hiding Disconect", DateTime.Now);
+        }
+
+        /// <summary>
+        ///     Reconnect packet process.
+        /// </summary>
+        /// <param name="args"></param>
+        private static  void Reconnect(GamePacketEventArgs args)
+        {
+            var reader = new BinaryReader(new MemoryStream(args.PacketData));
+            byte packetId = reader.ReadByte();
+            int packet = -1;
+
+            if (Game.Version.Contains("6.24"))
+            {
+                packet = 65;
+            }
+
+            if (packetId != packet)
+            {
+                return;
+            }
+
+            HideAnnouncer = true;
+            lastAnnouncer = Environment.TickCount;
+            Console.WriteLine("[Streaming {0:HH:mm:ss}] Hiding Reconnect", DateTime.Now);
+        }
         /// <summary>
         ///     The Menu.
         /// </summary>
