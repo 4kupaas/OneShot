@@ -142,7 +142,6 @@
             Menu.Item("AddTestCard").ValueChanged += (sender, args) =>
             {
                 args.Process = false;
-
                 lastAnnouncer = Environment.TickCount;
                 HideAnnouncer = true;
             };
@@ -186,6 +185,12 @@
                 HideAnnouncer = true;
                 lastAnnouncer = Environment.TickCount;
                 Console.WriteLine("[Streaming {0:HH:mm:ss}] Hiding {1}", DateTime.Now, args.EventId);
+
+                if (HideAnnouncer && lastAnnouncer > Environment.TickCount)
+                {
+                    lastAnnouncer = Environment.TickCount + 3000;
+                    Console.WriteLine("[Streaming EXTEND  {0:HH:mm:ss}] Hiding {1}", DateTime.Now, args.EventId);
+                }
             }
         }
 
