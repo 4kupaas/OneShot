@@ -155,32 +155,36 @@
         /// <param name="args"></param>
         private static void OnNotify(GameNotifyEventArgs args)
         {
-            if (args.EventId == GameEventId.OnChampionDoubleKill
-                || args.EventId == GameEventId.OnChampionTripleKill 
+            if (args.EventId == GameEventId.OnChampionDoubleKill 
+                || args.EventId == GameEventId.OnChampionTripleKill
                 || args.EventId == GameEventId.OnChampionQuadraKill 
-                || args.EventId == GameEventId.OnChampionPentaKill 
+                || args.EventId == GameEventId.OnChampionPentaKill
                 || args.EventId == GameEventId.OnChampionUnrealKill
-                || args.EventId == GameEventId.OnAce 
+                || args.EventId == GameEventId.OnChampionDie
+                || args.EventId == GameEventId.OnAce
                 || args.EventId == GameEventId.OnFirstBlood 
-                || args.EventId == GameEventId.OnTurretDie 
-                || args.EventId == GameEventId.OnTurretKill
+                || args.EventId == GameEventId.OnTurretDie
+                || args.EventId == GameEventId.OnTurretKill 
                 || args.EventId == GameEventId.OnChampionKill
-                || args.EventId == GameEventId.OnKillingSpree
+                || args.EventId == GameEventId.OnKillingSpree 
                 || args.EventId == GameEventId.OnKillingSpreeSet1
-                || args.EventId == GameEventId.OnKillingSpreeSet2
+                || args.EventId == GameEventId.OnKillingSpreeSet2 
                 || args.EventId == GameEventId.OnKillingSpreeSet3
-                || args.EventId == GameEventId.OnKillingSpreeSet4
+                || args.EventId == GameEventId.OnKillingSpreeSet4 
                 || args.EventId == GameEventId.OnKillingSpreeSet5
-                || args.EventId == GameEventId.OnKillingSpreeSet6
-                || args.EventId == GameEventId.OnGameModeAnnouncement1
-                || args.EventId == GameEventId.OnKillDragon
+                || args.EventId == GameEventId.OnKillingSpreeSet6 
+                || args.EventId == GameEventId.OnKillWorm
+                || args.EventId == GameEventId.OnKillWormSteal
+                || args.EventId == GameEventId.OnKill
+                || args.EventId == GameEventId.OnKillDragon 
                 || args.EventId == GameEventId.OnKillRiftHerald
-                || args.EventId == GameEventId.OnChampionSingleKill
+                || args.EventId == GameEventId.OnChampionSingleKill 
                 || args.EventId == GameEventId.OnKillDragonSteal
-                || args.EventId == GameEventId.OnReconnect
+                || args.EventId == GameEventId.OnReconnect 
                 || args.EventId == GameEventId.OnQuit
-                || args.EventId == GameEventId.OnShutdown
-                || args.EventId == GameEventId.OnLeave)
+                || args.EventId == GameEventId.OnShutdown 
+                || args.EventId == GameEventId.OnLeave
+                || args.EventId == GameEventId.OnTurretDie)
             {
                 HideAnnouncer = true;
                 lastAnnouncer = Environment.TickCount;
