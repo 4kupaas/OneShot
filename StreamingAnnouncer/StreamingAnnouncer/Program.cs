@@ -175,7 +175,6 @@
                 || args.EventId == GameEventId.OnKillingSpreeSet6 
                 || args.EventId == GameEventId.OnKillWorm
                 || args.EventId == GameEventId.OnKillWormSteal
-                || args.EventId == GameEventId.OnKill
                 || args.EventId == GameEventId.OnKillDragon 
                 || args.EventId == GameEventId.OnKillRiftHerald
                 || args.EventId == GameEventId.OnChampionSingleKill 
