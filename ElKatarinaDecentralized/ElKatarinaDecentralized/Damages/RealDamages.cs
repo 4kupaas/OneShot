@@ -31,7 +31,7 @@
 
             if (Misc.SpellR.SpellObject.IsReady())
             {
-                damage += Misc.SpellR.SpellObject.GetDamage(target, 1) * 15; // max daggers
+                damage += Misc.SpellR.SpellObject.GetDamage(target) * 15; // max daggers
             }
 
             return damage;
