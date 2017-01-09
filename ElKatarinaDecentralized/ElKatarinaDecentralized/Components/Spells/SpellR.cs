@@ -36,12 +36,12 @@
         /// <summary>
         ///     Cancel ult.
         /// </summary>
-        private static bool CancellingUlt;
+        private static bool _cancellingUlt;
 
         /// <summary>
         ///     Last stealth ult.
         /// </summary>
-        private static int LastStealthedUlt;
+        private static int _lastStealthedUlt;
 
         #endregion
 
@@ -108,21 +108,21 @@
             if (MyMenu.RootMenu.Item("combo.stealth").IsActive() && this.SpellObject.IsReady() && ObjectManager.Player.CountEnemiesInRange(this.Range) == 0 
                 && this.SpellObject.Cast())
             {
-                LastStealthedUlt = Utils.TickCount;
+                _lastStealthedUlt = Utils.TickCount;
                 return;
             }
 
             var importantSpell = ObjectManager.Player.IsChannelingImportantSpell();
             if (importantSpell)
             {
-                if (MyMenu.RootMenu.Item("combo.r.no.enemies").IsActive() && ObjectManager.Player.CountEnemiesInRange(this.Range) == 0 
-                    && !CancellingUlt && Utils.TickCount - LastStealthedUlt > 2500)
+                if (MyMenu.RootMenu.Item("combo.r.no.enemies").IsActive() && ObjectManager.Player.CountEnemiesInRange(this.Range + 379) == 0 
+                    && !_cancellingUlt && Utils.TickCount - _lastStealthedUlt > 2500)
                 {
-                    CancellingUlt = true;
+                    _cancellingUlt = true;
                     Utility.DelayAction.Add(
                        300, () =>
                        {
-                           CancellingUlt = false;
+                           _cancellingUlt = false;
                            if (ObjectManager.Player.CountEnemiesInRange(550f) == 0)
                            {
                                ObjectManager.Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.ServerPosition.Randomize(10, 20), false);

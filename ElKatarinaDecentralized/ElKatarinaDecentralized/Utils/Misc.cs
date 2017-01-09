@@ -34,10 +34,7 @@
         /// <summary>
         ///     Gets the auto attack range.
         /// </summary>
-        internal static float KatarinaAutoAttackRange
-        {
-            get { return Orbwalking.GetRealAutoAttackRange(ObjectManager.Player); }
-        }
+        internal static float KatarinaAutoAttackRange => Orbwalking.GetRealAutoAttackRange(ObjectManager.Player);
 
         /// <summary>
         ///     Checks if spell is castable.
