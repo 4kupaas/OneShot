@@ -61,7 +61,6 @@
                     return;
                 }
 
-
                 var target =
                     HeroManager.Enemies.Where(x => x.IsValidTarget(this.Range) && !x.IsDead && !x.IsZombie)
                         .OrderBy(x => x.Health)
