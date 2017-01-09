@@ -38,6 +38,11 @@
         /// </summary>
         private static bool CancellingUlt;
 
+        /// <summary>
+        ///     Last stealth ult.
+        /// </summary>
+        private static int LastStealthedUlt;
+
         #endregion
 
         #region Methods
@@ -100,10 +105,18 @@
         /// </summary>
         internal override void OnUpdate()
         {
+            if (MyMenu.RootMenu.Item("combo.stealth").IsActive() && this.SpellObject.IsReady() && ObjectManager.Player.CountEnemiesInRange(this.Range) == 0 
+                && this.SpellObject.Cast())
+            {
+                LastStealthedUlt = Utils.TickCount;
+                return;
+            }
+
             var importantSpell = ObjectManager.Player.IsChannelingImportantSpell();
             if (importantSpell)
             {
-                if (MyMenu.RootMenu.Item("combo.r.no.enemies").IsActive() && ObjectManager.Player.CountEnemiesInRange(550f) == 0 && !CancellingUlt)
+                if (MyMenu.RootMenu.Item("combo.r.no.enemies").IsActive() && ObjectManager.Player.CountEnemiesInRange(this.Range) == 0 
+                    && !CancellingUlt && Utils.TickCount - LastStealthedUlt > 2500)
                 {
                     CancellingUlt = true;
                     Utility.DelayAction.Add(

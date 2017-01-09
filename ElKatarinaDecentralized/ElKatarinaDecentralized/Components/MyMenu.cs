@@ -90,6 +90,8 @@
                         nodeCombo.AddItem(new MenuItem("combo.disable.movement", "Disable Movement while casting R").SetValue(true));
                         nodeCombo.AddItem(new MenuItem("combo.disable.evade", "Disable Evade while casting R").SetValue(true));
                         nodeCombo.AddItem(new MenuItem("combo.r.no.enemies", "Cancel R if no enemies").SetValue(false));
+                        nodeCombo.AddItem(new MenuItem("combo.stealth", "R Stealthed Units").SetValue(false));
+
                     }
                 }
 
@@ -187,7 +189,7 @@
                 node.AddItem(new MenuItem("ks.e", "Use E").SetValue(true));
                 node.AddItem(new MenuItem("ks.r", "Use R").SetValue(false));
                 node.AddItem(new MenuItem("ks.r.ticks", "R ticks").SetValue(new Slider(7, 1, 15)));
-                node.AddItem(new MenuItem("ks.r.cancel.r", "Cancel R to KS").SetValue(false));
+                node.AddItem(new MenuItem("ks.r.cancel.r1", "Cancel R to KS").SetValue(true));
                 node.AddItem(new MenuItem("ks.rhp", "Min Health").SetValue(new Slider(10)));
 
                 var dmgAfterE = new MenuItem("misc.drawcombodamage", "Draw combo damage").SetValue(true);
