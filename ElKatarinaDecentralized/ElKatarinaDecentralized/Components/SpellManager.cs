@@ -46,6 +46,7 @@
             {
                 this.LoadSpells(new List<ISpell>() { new SpellQ(), new SpellW(), new SpellE(), new SpellR() });
                 Misc.SpellQ = new SpellQ();
+                Misc.SpellW = new SpellW();
                 Misc.SpellE = new SpellE();
                 Misc.SpellR = new SpellR();
             }

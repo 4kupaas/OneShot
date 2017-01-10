@@ -79,7 +79,18 @@
                         case 1:
                             if (target.IsValidTarget(this.Range))
                             {
-                                this.SpellObject.Cast();
+                                if (Misc.SpellW.SpellObject.IsReady() && target.IsValidTarget(this.Range - 150)) // just check melee range
+                                {
+                                    Misc.SpellW.SpellObject.Cast();
+                                }
+                                else if (Misc.SpellW.SpellObject.IsReady())
+                                {
+                                    Misc.SpellQ.SpellObject.CastOnUnit(target);
+                                }
+                                else
+                                {
+                                    this.SpellObject.Cast();
+                                }
                             }
                             break;
                     }
