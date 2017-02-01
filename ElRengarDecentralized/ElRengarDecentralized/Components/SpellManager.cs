@@ -39,6 +39,7 @@
             try
             {
                 this.LoadSpells(new List<ISpell>() { new SpellQ(), new SpellW(), new SpellE() });
+                Game.PrintChat("[00:01] <font color='#CC0000'>BATTLERITE!</font> Join http://aimtec.io for Battlerite scripts! SUPER FUN");
             }
             catch (Exception e)
             {
