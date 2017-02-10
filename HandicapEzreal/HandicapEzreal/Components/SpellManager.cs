@@ -38,6 +38,7 @@
                 Misc.SpellQ = new SpellQ();
                 Misc.SpellW = new SpellW();
                 Misc.SpellR = new SpellR();
+                Game.PrintChat("[00:01] <font color='#CC0000'>BATTLERITE!</font> Join http://aimtec.io for Battlerite scripts! SUPER FUN");
             }
             catch (Exception e)
             {
